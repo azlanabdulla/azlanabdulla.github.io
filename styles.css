@@ -1,0 +1,399 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #111;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* Responsive Font Sizes */
+html {
+    font-size: 16px; /* Base font size */
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+/* Heading Title Glow Effect */
+.text-container {
+    position: relative;
+    font-size: 10rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: black; /* Black text */
+    -webkit-text-stroke: 2px white; /* Default white outline */
+    opacity: 20%;
+}
+
+.glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: black;
+    -webkit-text-stroke: 4px transparent; /* Increased stroke width */
+    pointer-events: none;
+    background: linear-gradient(90deg, #ff0000, #ffff00, #00ffff, #ff00ff, #ff0000);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    mask: radial-gradient(circle 80px at var(--cursor-x) var(--cursor-y), white 70%, transparent 100%);
+    -webkit-mask: radial-gradient(circle 80px at var(--cursor-x) var(--cursor-y), white 70%, transparent 100%);
+    opacity: 100%;
+    animation: rgbFlow 2s infinite linear;
+}
+
+@keyframes rgbFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 200% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .text-container {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-container {
+        font-size: 3rem;
+    }
+}
+
+
+/* Description */
+.discript {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .discript {
+        font-size: 1.2rem;
+        top: 65%;
+    }
+}
+
+@media (max-width: 480px) {
+    .discript {
+        font-size: 1rem;
+        top: 70%;
+    }
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 0.3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    transition: top 0.3s ease-in-out; /* Smooth transition for hiding/showing */
+}
+
+.navbar.scrolled {
+    background: #222;
+    padding: 0.8rem 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffcc00;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s, transform 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+    color: #ffcc00;
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .nav-links {
+        gap: 0.8rem;
+    }
+
+    .nav-links a {
+        font-size: 0.8rem;
+    }
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('hero-bg.jpg') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.cta-button {
+    padding: 0.8rem 2rem;
+    background: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cta-button:hover {
+    background: #e6b800;
+}
+
+@media (max-width: 768px) {
+    .cta-button {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-button {
+        font-size: 0.8rem;
+        padding: 0.6rem 1.2rem;
+    }
+}
+
+/* Events Section */
+.events {
+    padding: 4rem 2rem;
+    background: #222;
+    text-align: center;
+}
+
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+/* General Card Styling */
+.event-card {
+    background: #333;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    text-align: center;
+}
+
+/* Event Cards */
+.event-card1, .event-card2, .event-card3 {
+    background: #333;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Hover effect class that will be added when element is in viewport */
+.hover-effect {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(255, 204, 0, 0.2);
+}
+
+/* Event Card 1 */
+.event-card1:hover {
+    background: #ffcc00;
+    color: #000;
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 204, 0, 0.3);
+}
+
+.event-card1 img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.event-card1 img:hover {
+    transform: scale(1.25);
+}
+
+/* Event Card 2 */
+.event-card2:hover {
+    background: #ffcc00;
+    color: #000;
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 204, 0, 0.3);
+}
+
+.event-card2 img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.event-card2 img:hover {
+    transform: scale(1.95);
+}
+
+/* Event Card 3 */
+.event-card3:hover {
+    background: #ffcc00;
+    color: #000;
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 204, 0, 0.3);
+}
+
+.event-card3 img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.event-card3 img:hover {
+    transform: scale(1.75);
+}
+
+.event-card1 h3,
+.event-card2 h3,
+.event-card3 h3 {
+    margin-top: 20px; /* Moves the heading down */
+}
+
+.section-title1, .section-title2, .section-title3 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #ffcc00;
+}
+
+@media (max-width: 768px) {
+    .section-title1, .section-title2, .section-title3 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title1, .section-title2, .section-title3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Gallery Section */
+.gallery {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: #111;
+}
+
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.gallery-grid img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Map Section */
+.map {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: #111;
+}
+
+.map-grid img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 10px;
+    transform: rotate(-90deg);
+}
+
+/* Sponsors Section */
+.sponsors {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: #222;
+}
+
+.sponsor-logos img {
+    width: 100px;
+    margin: 0.5rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #111;
+    color: #ffcc00;
+}
