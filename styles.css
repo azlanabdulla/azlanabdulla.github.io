@@ -323,7 +323,7 @@ html {
     margin-top: 20px; /* Moves the heading down */
 }
 
-.section-title1, .section-title2, .section-title3 {
+.section-title1, .section-title2, .section-title3,.section-title4,.section-title5,.section-title6{
     margin-bottom: 2rem;
     font-size: 2rem;
     color: #ffcc00;
@@ -396,4 +396,14 @@ footer {
     padding: 1rem;
     background: #111;
     color: #ffcc00;
+}
+
+.about {
+    padding: 4rem 2rem;
+    background: #222;
+    text-align: center;
+}
+.Schedule{
+    padding: 4rem 2rem;
+    text-align: center;
 }
