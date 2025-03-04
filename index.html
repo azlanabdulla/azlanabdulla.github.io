@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="logo2.png">
+    <meta name="theme-color" content="#ff6600"> <!-- Change to your desired color -->
+
     <title>Speranza - Techfest</title>
     <link rel="stylesheet" href="styles.css">
 
@@ -68,7 +70,61 @@
         <h2 class="section-title3">Map</h2>
         <div class="map-grid">
             <img src="map.png" alt="Campus Map" width="1000px">
-        </div>  
+            <input type="text" class="search-bar" value="Govt Engineering College Wayanad" readonly onclick="redirectToGoogleMaps()">
+
+                    <style>
+                        .map-grid {
+                            display: flex;
+                            flex-direction: column; /* Stack items vertically */
+                            align-items: center; /* Center horizontally */
+                            justify-content: center;
+                            gap: 20px; /* Space between the map and search bar */
+                        }
+
+                        .search-bar {
+                            width: 400px;
+                            padding: 10px;
+                            font-size: 16px;
+                            border: 2px solid #ffcc00;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            text-align: center;
+                            background-color: #ffcc00;
+                            color: black;
+                            font-weight: bold;
+                            transition: 0.3s ease-in-out;
+                            margin-top: 10px; /* Extra spacing if needed */
+                        }
+
+                        .search-bar:hover {
+                            border-color: #000;
+                            background-color: #ffd633; /* Slightly lighter yellow */
+                            transform: scale(1.05);
+                        }
+
+                        /* Responsive adjustments */
+                        @media (max-width: 768px) {
+                            .search-bar {
+                                width: 80%; /* Make it more flexible */
+                                font-size: 14px;
+                            }
+                        }
+
+                        @media (max-width: 480px) {
+                            .search-bar {
+                                width: 90%; /* Full width for smaller screens */
+                            }
+                        }
+
+                    </style>
+
+                    <script>
+                        function redirectToGoogleMaps() {
+                            window.location.href = "https://maps.app.goo.gl/utpmHx5Byc2aQsTr7";
+                        }
+                    </script>
+
+                    </div>  
     </section>
 
     <!-- Gallery Section -->
