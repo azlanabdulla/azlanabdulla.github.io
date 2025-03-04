@@ -266,7 +266,7 @@ html {
 }
 
 .event-card1 img {
-    width: 100%;
+    width: 80%;
     height: auto;
     max-width: 300px;
     transition: transform 0.3s ease-in-out;
