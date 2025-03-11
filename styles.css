@@ -103,6 +103,7 @@ html {
 }
 
 /* Navbar */
+/* Navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -113,7 +114,7 @@ html {
     align-items: center;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    transition: top 0.3s ease-in-out; /* Smooth transition for hiding/showing */
+    transition: top 0.3s ease-in-out;
 }
 
 .navbar.scrolled {
@@ -121,11 +122,8 @@ html {
     padding: 0.8rem 2rem;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffcc00;
-    text-transform: uppercase;
+.logo img {
+    width: 50px;
 }
 
 .nav-links {
@@ -145,33 +143,54 @@ html {
     transform: scale(1.2);
 }
 
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger span {
+    width: 30px;
+    height: 4px;
+    background: white;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    background: #ffcc00;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 @media (max-width: 768px) {
     .nav-links {
-        gap: 1rem;
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        text-align: center;
+        padding: 1rem;
     }
 
-    .nav-links a {
-        font-size: 0.9rem;
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
     }
 }
 
-@media (max-width: 480px) {
-    .navbar {
-        padding: 0.8rem 1rem;
-    }
-
-    .logo {
-        font-size: 1.2rem;
-    }
-
-    .nav-links {
-        gap: 0.8rem;
-    }
-
-    .nav-links a {
-        font-size: 0.8rem;
-    }
-}
 
 /* Hero Section */
 .hero {
@@ -241,7 +260,7 @@ html {
 }
 
 /* Event Cards */
-.event-card1, .event-card2, .event-card3 {
+.event-card1, .event-card2, .event-card3 ,.event-card4 {
     background: #333;
     padding: 1.5rem;
     border-radius: 10px;
@@ -266,7 +285,7 @@ html {
 }
 
 .event-card1 img {
-    width: 0%;
+    width: 100%;
     height: auto;
     max-width: 300px;
     transition: transform 0.3s ease-in-out;
@@ -294,7 +313,7 @@ html {
 }
 
 .event-card2 img:hover {
-    transform: scale(1.95);
+    transform: scale(1.50);
 }
 
 /* Event Card 3 */
@@ -317,10 +336,12 @@ html {
     transform: scale(1.75);
 }
 
+
 .event-card1 h3,
 .event-card2 h3,
 .event-card3 h3 {
-    margin-top: 20px; /* Moves the heading down */
+
+ margin-top: 20px; /* Moves the heading down */
 }
 
 .section-title1, .section-title2, .section-title3,.section-title4,.section-title5,.section-title6{
@@ -330,13 +351,13 @@ html {
 }
 
 @media (max-width: 768px) {
-    .section-title1, .section-title2, .section-title3 {
+    .section-title1, .section-title2, .section-title3,.section-title4,.section-title5,.section-title6 {
         font-size: 1.8rem;
     }
 }
 
 @media (max-width: 480px) {
-    .section-title1, .section-title2, .section-title3 {
+    .section-title1, .section-title2, .section-title3,.section-title4,.section-title5,.section-title6 {
         font-size: 1.5rem;
     }
 }
