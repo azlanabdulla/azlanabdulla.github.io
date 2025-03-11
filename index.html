@@ -18,36 +18,44 @@
         <div class="logo">
             <img src="logo2.png" alt="speranza-logo" width="8%">
         </div>
-        <div class="nav-links">
-            <a href="#home"><span>Home</span></a>
-            <a href="#events"><span>Events</span></a>
-            <a href="#map"><span>Map</span></a>
-            <a href="#schedule"><span>Schedule</span></a>
-            <a href="#gallery"><span>Gallery</span></a>
-            <a href="#sponsors"><span>Sponsors</span></a>
-            <a href="#about"><span>About</span></a>
-        </div>
+
+        <!-- SVG Hamburger Menu -->
         <div class="hamburger" onclick="toggleMenu()">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <img src="burger-menu-right-svgrepo-com.svg" alt="Menu Icon">
         </div>
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="#home"><span>Home</span></a>
-            <a href="#events"><span>Events</span></a>
-            <a href="#map"><span>Map</span></a>
-            <a href="#schedule"><span>Schedule</span></a>
-            <a href="#gallery"><span>Gallery</span></a>
-            <a href="#sponsors"><span>Sponsors</span></a>
-            <a href="#about"><span>About</span></a>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="#home" class="nav-item">Home</a>
+            <a href="#events" class="nav-item">Events</a>
+            <a href="#map" class="nav-item">Map</a>
+            <a href="#schedule" class="nav-item">Schedule</a>
+            <a href="#gallery" class="nav-item">Gallery</a>
+            <a href="#sponsors" class="nav-item">Sponsors</a>
+            <a href="#about" class="nav-item">About</a>
         </div>
     </nav>
 
-    <script>
-        function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('open');
-        }
+    <script>document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+        const navItems = document.querySelectorAll(".nav-item");
+    
+        // Toggle mobile menu
+        menuToggle.addEventListener("click", function () {
+            navLinks.classList.toggle("active");
+        });
+    
+        // Handle touch events for yellow line effect
+        navItems.forEach((item) => {
+            item.addEventListener("touchstart", function () {
+                navItems.forEach((el) => el.classList.remove("active")); // Remove from others
+                this.classList.add("active"); // Add to touched item
+            });
+        });
+    });
     </script>
+
 
 
     <!-- Hero Section -->
