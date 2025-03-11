@@ -115,7 +115,7 @@ html {
     z-index: 1000;
 }
 
-/* Navbar Links */
+/* Desktop Navigation */
 .nav-links {
     display: flex;
     gap: 1.5rem;
@@ -128,103 +128,70 @@ html {
     font-size: 1rem;
     padding: 10px 15px;
     transition: font-weight 0.3s, color 0.3s ease-in-out;
-    overflow: hidden;
 }
 
-/* Yellow Line Effect */
+/* Yellow Line Effect (Initially Hidden) */
 .nav-links a::after {
     content: '';
     position: absolute;
-    left: -100%;
-    top: 50%;
+    left: 0;
+    top: 50%;  /* Center the line vertically */
     width: 100%;
     height: 3px;
     background: yellow;
-    transform: translateY(-50%);
-    transition: left 0.3s ease-in-out;
+    transform: translateY(-50%) scaleX(0);  /* Ensure the line is initially hidden */
+    transition: transform 0.3s ease-in-out;
 }
 
-/* Hover Effect */
-.nav-links a:hover {
-    font-weight: bold;
-    color: #ffcc00;
+/* Show Line ONLY on Hover (Desktop) */
+@media (hover: hover) {
+    .nav-links a:hover::after {
+        transform: translateY(-50%) scaleX(1); /* Expand the line */
+    }
 }
 
-.nav-links a:hover::after {
-    left: 0;
-}
-
-/* Hamburger Menu */
+/* SVG Hamburger Menu */
 .hamburger {
     display: none;
-    flex-direction: column;
-    gap: 5px;
     cursor: pointer;
-    width: 50px; /* Adjusted to match logo size */
-    height: 50px;
-    justify-content: center;
-    align-items: center;
 }
 
-.bar {
-    width: 40px;
-    height: 4px;
-    background: #ffcc00; /* Yellow */
-    transition: 0.3s;
+.hamburger img {
+    width: 30%; /* Adjust size */
+    height: auto;
+    filter: brightness(0) saturate(100%) invert(73%) sepia(92%) saturate(944%) hue-rotate(1deg) brightness(105%) contrast(102%);
 }
+
+
+
+
+
 
 /* Mobile Menu */
-.mobile-menu {
-    display: none;
-    position: fixed;
-    top: 60px;
-    right: 0;
-    width: 60%;
-    background: rgba(0, 0, 0, 0.9);
-    padding: 1rem;
-    text-align: center;
-    border-left: 2px solid yellow;
-}
-
-.mobile-menu.open {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Touch Effect */
-.mobile-menu a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    padding: 8px 10px;
-    position: relative;
-    transition: font-weight 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-/* Yellow Line Only When Touched */
-.mobile-menu a.active::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    height: 3px;
-    background: yellow;
-    transform: translateY(-50%);
-    transition: left 0.3s ease-in-out;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 60px;
+        right: 0;
+        width: 60%;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 1rem;
+        text-align: center;
+        border-left: 2px solid yellow;
+    }
+
+    .nav-links.active {
+        display: flex;
     }
 
     .hamburger {
         display: flex;
+        align-items: center;
     }
 }
+
 
 
 /* Hero Section */
