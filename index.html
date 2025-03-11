@@ -18,25 +18,34 @@
         <div class="logo">
             <img src="logo2.png" alt="speranza-logo" width="8%">
         </div>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
         <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#events">Events</a>
-            <a href="#map">Map</a>
-            <a href="#schedule">Schedule</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#sponsors">Sponsors</a>
-            <a href="#about">About</a>
+            <a href="#home"><span>Home</span></a>
+            <a href="#events"><span>Events</span></a>
+            <a href="#map"><span>Map</span></a>
+            <a href="#schedule"><span>Schedule</span></a>
+            <a href="#gallery"><span>Gallery</span></a>
+            <a href="#sponsors"><span>Sponsors</span></a>
+            <a href="#about"><span>About</span></a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#home"><span>Home</span></a>
+            <a href="#events"><span>Events</span></a>
+            <a href="#map"><span>Map</span></a>
+            <a href="#schedule"><span>Schedule</span></a>
+            <a href="#gallery"><span>Gallery</span></a>
+            <a href="#sponsors"><span>Sponsors</span></a>
+            <a href="#about"><span>About</span></a>
         </div>
     </nav>
+
     <script>
         function toggleMenu() {
-            document.querySelector('.nav-links').classList.toggle('active');
-            document.querySelector('.hamburger').classList.toggle('open');
+            document.getElementById('mobileMenu').classList.toggle('open');
         }
     </script>
 
