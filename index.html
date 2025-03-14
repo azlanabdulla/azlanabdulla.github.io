@@ -14,47 +14,26 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="logo2.png" alt="speranza-logo" width="8%">
-        </div>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo2.png" alt="speranza-logo" width="8%">
+            </div>
 
-        <!-- SVG Hamburger Menu -->
-        <div class="hamburger" onclick="toggleMenu()">
-            <img src="burger-menu-right-svgrepo-com.svg" alt="Menu Icon">
-        </div>
+            <!-- Navigation Links -->
+            <div class="nav-links">
+                <a href="#home" class="nav-item">Home</a>
+                <a href="#events" class="nav-item">Events</a>
+                <a href="#map" class="nav-item">Map</a>
+                <a href="#schedule" class="nav-item">Schedule</a>
+                <a href="#gallery" class="nav-item">Gallery</a>
+                <a href="#sponsors" class="nav-item">Sponsors</a>
+                <a href="#about" class="nav-item">About</a>
+            </div>
 
-        <!-- Navigation Links -->
-        <div class="nav-links">
-            <a href="#home" class="nav-item">Home</a>
-            <a href="#events" class="nav-item">Events</a>
-            <a href="#map" class="nav-item">Map</a>
-            <a href="#schedule" class="nav-item">Schedule</a>
-            <a href="#gallery" class="nav-item">Gallery</a>
-            <a href="#sponsors" class="nav-item">Sponsors</a>
-            <a href="#about" class="nav-item">About</a>
-        </div>
-    </nav>
+            <!-- Hamburger Menu (Mobile) -->
+            <div class="hamburger-menu">&#9776;</div>
+        </nav>
 
-    <script>document.addEventListener("DOMContentLoaded", function () {
-        const menuToggle = document.querySelector(".hamburger");
-        const navLinks = document.querySelector(".nav-links");
-        const navItems = document.querySelectorAll(".nav-item");
-    
-        // Toggle mobile menu
-        menuToggle.addEventListener("click", function () {
-            navLinks.classList.toggle("active");
-        });
-    
-        // Handle touch events for yellow line effect
-        navItems.forEach((item) => {
-            item.addEventListener("touchstart", function () {
-                navItems.forEach((el) => el.classList.remove("active")); // Remove from others
-                this.classList.add("active"); // Add to touched item
-            });
-        });
-    });
-    </script>
 
 
 
@@ -171,7 +150,7 @@
         <h2 class="section-title4">Gallery</h2>
         <div class="gallery-grid">
 
-            <img src="gallery1.png" alt="Event Image" class="event-image">
+            <img src="gallery/gallery1.png" alt="Event Image" class="event-image">
             <style>
                 .event-image {
                     width: 50px; /* Set a specific width */
@@ -179,8 +158,8 @@
                 }
             </style>
 
-            <img src="gallery2.jpg" alt="Event Image" class="event-image">
-            <img src="gallery3.png" alt="Event Image" class="event-image">
+            <img src="gallery/gallery2.jpg" alt="Event Image" class="event-image">
+            <img src="gallery/gallery3.png" alt="Event Image" class="event-image">
         </div>
     </section>
 
