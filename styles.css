@@ -78,41 +78,24 @@ html {
 }
 
 
-/* Description */
-.discript {
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    text-align: center;
-}
-
-@media (max-width: 768px) {
-    .discript {
-        font-size: 1.2rem;
-        top: 65%;
-    }
-}
-
-@media (max-width: 480px) {
-    .discript {
-        font-size: 1rem;
-        top: 70%;
-    }
-}
 
 /* Navbar */
 .navbar {
     position: fixed;
-    top: 0;
+    top: -80px; /* Initially hidden */
     width: 100%;
     padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: rgba(0, 0, 0, 0.8);
+    transition: top 0.4s ease-in-out;
     z-index: 1000;
+}
+
+/* Show navbar when hovered */
+.navbar:hover {
+    top: 0;
 }
 
 /* Desktop Navigation */
@@ -122,52 +105,35 @@ html {
 }
 
 .nav-links a {
-    position: relative;
-    color: white;
+    color: white; /* Default color */
     text-decoration: none;
     font-size: 1rem;
     padding: 10px 15px;
-    transition: font-weight 0.3s, color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out;
 }
 
-/* Yellow Line Effect (Initially Hidden) */
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;  /* Center the line vertically */
-    width: 100%;
-    height: 3px;
-    background: yellow;
-    transform: translateY(-50%) scaleX(0);  /* Ensure the line is initially hidden */
-    transition: transform 0.3s ease-in-out;
+/* Hover & Click Effect */
+.nav-links a:hover,
+.nav-links a:active {
+    color: #ffcc00;
 }
-
-/* Show Line ONLY on Hover (Desktop) */
-@media (hover: hover) {
-    .nav-links a:hover::after {
-        transform: translateY(-50%) scaleX(1); /* Expand the line */
-    }
-}
-
-/* SVG Hamburger Menu */
-.hamburger {
-    display: none;
-    cursor: pointer;
-}
-
-.hamburger img {
-    width: 30%; /* Adjust size */
-    height: auto;
-    filter: brightness(0) saturate(100%) invert(73%) sepia(92%) saturate(944%) hue-rotate(1deg) brightness(105%) contrast(102%);
-}
-
-
-
-
-
 
 /* Mobile Menu */
+.hamburger-menu {
+    display: none;
+    font-size: 2rem;
+    color: white; /* Default color */
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Change color when hovered or clicked */
+.hamburger-menu:hover,
+.hamburger-menu:active {
+    color: #ffcc00;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -182,30 +148,82 @@ html {
         border-left: 2px solid yellow;
     }
 
-    .nav-links.active {
+    .nav-links.open {
         display: flex;
     }
 
-    .hamburger {
+    .hamburger-menu {
         display: flex;
-        align-items: center;
     }
 }
 
+/* Navbar item default style */
+.nav-links a {
+    display: inline-block;
+    text-decoration: none;
+    color: white; /* Default text color */
+    font-size: 1rem; /* Default font size */
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Increase size when hovered or clicked */
+.nav-links a:hover,
+.nav-links a:focus,
+.nav-links a:active {
+    transform: scale(1.2); /* Slight increase in size */
+    color: #ffcc00; /* Change color when active */
+}
 
 
-/* Hero Section */
-.hero {
-    height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('hero-bg.jpg') center/cover;
+/* Full-page container to center content */
+.hero-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #fff;
+    height: 100vh; /* Full viewport height */
+    padding: 1rem;
 }
 
+/* Description */
+.discript {
+    font-size: 1.5rem;
+    max-width: 90%;
+    line-height: 1.4;
+    text-align: center;
+    position: relative; /* Allows manual positioning */
+    top: -5px; /* Move it up or down manually */
+    margin-bottom: 1rem; /* Adjust spacing before button */
+    right: -5%; /* Move right (+) or left (-) */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .discript {
+        font-size: 1.2rem;
+        top: 0px; /* Adjust for tablets */
+        margin-bottom: 0.8rem;
+        right: -3%; /* Reduce shift for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .discript {
+        font-size: 1rem;
+        top: -5px; /* Adjust for mobile */
+        margin-bottom: 0.6rem;
+        right: 0; /* Fully center on smaller screens */
+    }
+}
+
+
+
+
+
+/* CTA Button */
 .cta-button {
+    display: inline-block;
     padding: 0.8rem 2rem;
     background: #ffcc00;
     color: #000;
@@ -214,28 +232,54 @@ html {
     font-size: 1rem;
     cursor: pointer;
     transition: 0.3s;
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    text-align: center;
+    margin-top: 1rem; /* Add spacing between text and button */
 }
 
+/* Hover effect */
 .cta-button:hover {
     background: #e6b800;
 }
 
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     .cta-button {
         font-size: 0.9rem;
-        padding: 0.7rem 1.5rem;
+        padding: 0.7rem 1.8rem;
+        margin-top: 0.8rem;
     }
 }
 
 @media (max-width: 480px) {
     .cta-button {
-        font-size: 0.8rem;
-        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+        padding: 0.6rem 1.5rem;
+        margin-top: 0.6rem;
     }
+}
+
+
+
+
+
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 100vh;
+    background: url('sky.gif') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Hero Content */
+.hero-content {
+    position: relative;
+    z-index: 2;
 }
 
 /* Events Section */
