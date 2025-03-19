@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with SCAR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <h1 class="heading">Chat with SCAR</h1>
+
+        <div class="chat-box" id="chatBox">
+            {% for message in chat_history %}
+                <div class="message {{ 'user' if message.sender == 'user' else 'SCAR' }}">
+                    <strong>{{ 'You' if message.sender == 'user' else 'SCAR' }}:</strong> {{ message.text }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST">
+            <input type="text" name="user_input" id="userInput" placeholder="Type your message..." required autofocus >
+            <button type="submit">Send</button>
+        </form>
+    </div>
+   
+
+
+
+
+</body>
+</html>
