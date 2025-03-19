@@ -25,7 +25,7 @@ from brightness import BrightnessControl
 from control_wifi import WifiControl
 from search_on_gyt import search_on_google_youtube
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 chat_history = []
 # Function to determine chatbot model
 def model(text):
@@ -258,4 +258,5 @@ def chat():
     return render_template("index.html", chat_history=chat_history)
 
 if __name__ == "__main__":
+    app.run(debug=True)
     app.run(debug=True)
