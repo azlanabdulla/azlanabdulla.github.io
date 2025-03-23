@@ -1,97 +1,29 @@
-/* General Page Styling */
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    text-align: center;
+    background-color: #121212;
+    color: white;
     margin: 0;
+    padding: 0;
 }
-
-.heading {
-    color: #c9c7ba;
+.container {
+    margin-top: 50px;
 }
-
-/* Chat Container */
-.chat-container {
-    width: 400px;
-    background: #181818;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Chat Box (Fixed Size) */
-.chat-box {
-    height: 400px;  /* Keeps the chatbox height fixed */
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 8px;
-    padding: 10px;
-    border-radius: 10px;
-    background: #181818;
-}
-
-/* Message Bubbles */
-.message {
-    max-width: 75%;
-    padding: 12px;
-    border-radius: 18px;
-    font-size: 14px;
-    word-wrap: break-word;
-    line-height: 1.5;
-    display: inline-block;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* User Messages (Right Side) */
-.user {
-    background: #c9c7ba;
-    color: #29292b;
-    align-self: flex-end;
-    border-bottom-right-radius: 5px;
-}
-
-/* SCAR Messages (Left Side) */
-.SCAR {
-    background: #292929;
-    color: #c9c7ba;
-    align-self: flex-start;
-    border-bottom-left-radius: 5px;
-}
-
-/* Input & Button */
-form {
-    display: flex;
-    gap: 10px;
-}
-
 input {
-    flex: 1;
-    padding: 12px;
-    color: #c9c7ba;
-    background: #292929;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
+    padding: 10px;
+    width: 300px;
+    border: none;
+    border-radius: 5px;
 }
-
 button {
-    padding: 12px 15px;
-    background: #007bff;
+    padding: 10px 20px;
+    background-color: #6200ea;
     color: white;
     border: none;
-    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    margin-left: 10px;
 }
-
 button:hover {
-    background: #0056b3;
+    background-color: #3700b3;
 }
