@@ -3,49 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azlan Abdulla - Resume</title>
+    <title>Azlan Abdulla - 3D Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Azlan Abdulla</h1>
-        <p>Web Developer | AI Enthusiast | Designer</p>
+    <div id="scene-container"></div> <!-- 3D Model Here -->
+    
+    <header class="hero">
+        <div class="content">
+            <h1>Azlan Abdulla</h1>
+            <p>Web Developer | AI Enthusiast | Designer</p>
+        </div>
     </header>
     
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hello! I'm Azlan Abdulla, a passionate web developer and AI enthusiast. I build modern web apps and AI-driven solutions.</p>
-    </section>
-    
-    <section id="skills">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skill">HTML, CSS</div>
-            <div class="skill">Python, C</div>
-            <div class="skill">Machine Learning & AI</div>
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>Hello! I'm Azlan Abdulla, a passionate web developer and AI enthusiast. I specialize in creating modern web applications, AI-driven solutions, and unique 3D experiences.</p>
         </div>
     </section>
     
-    <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-            <li><strong>SCAAR AI</strong> - Advanced AI chatbot</li>
-            <li><strong>SecureSphere</strong> - Secure chat application</li>
-            <li><strong>APE NFT</strong> - NFT marketplace with 3D models</li>
-        </ul>
+    <section id="skills" class="section">
+        <div class="container">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill">HTML, CSS, JavaScript</div>
+                <div class="skill">React, Node.js</div>
+                <div class="skill">Python, Flask</div>
+                <div class="skill">Machine Learning & AI</div>
+            </div>
+        </div>
     </section>
     
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Email: azlanabdulla123@.com</p>
-        <p>GitHub: <a href="https://github.com/azlanabdulla" target="_blank">github.com/azlanabdulla</a></p>
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="project-list">
+                <div class="project">
+                    <h3>SCAAR AI</h3>
+                    <p>Advanced AI chatbot with real-time learning.</p>
+                </div>
+                <div class="project">
+                    <h3>SecureSphere</h3>
+                    <p>End-to-end encrypted chat application.</p>
+                </div>
+                <div class="project">
+                    <h3>APE NFT</h3>
+                    <p>Interactive NFT marketplace with 3D models.</p>
+                </div>
+            </div>
+        </div>
     </section>
     
-    <div id="model-container"></div> <!-- 3D Model Will Load Here -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>Email: azlan@example.com</p>
+            <p>GitHub: <a href="https://github.com/azlanabdulla" target="_blank">github.com/azlanabdulla</a></p>
+        </div>
+    </section>
     
     <footer>
-        <p>&copy; 2025 Azlan Abdulla</p>
+        <div class="container">
+            <p>&copy; 2025 Azlan Abdulla</p>
+        </div>
     </footer>
 </body>
 </html>
