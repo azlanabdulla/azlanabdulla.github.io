@@ -14,6 +14,7 @@ function sendMessage() {
     document.getElementById('user-input').value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
 
+    // Send request to backend
     fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -21,6 +22,8 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
+        if (!data.response) return;
+
         // Append bot response
         let botMessage = document.createElement("div");
         botMessage.classList.add("message", "bot-message");
@@ -30,11 +33,5 @@ function sendMessage() {
         // Scroll to bottom
         chatBox.scrollTop = chatBox.scrollHeight;
     })
-    .catch(error => console.error('Error:', error));
-}
-
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
+    .catch(error => console.error('Fetch error:', error));
 }
