@@ -1,12 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Load 3D Model
-    const modelContainer = document.getElementById("model-container");
-    if (modelContainer) {
-        const iframe = document.createElement("iframe");
-        iframe.src = "https://modelviewer.dev/examples/3d-model.glb"; // Replace with actual model URL
-        iframe.style.width = "100%";
-        iframe.style.height = "400px";
-        iframe.style.border = "none";
-        modelContainer.appendChild(iframe);
+    // Glow effect for hero title
+    const glowEffect = document.getElementById("glowEffect");
+    if (glowEffect) {
+        document.addEventListener("mousemove", (e) => {
+            const boundingBox = glowEffect.getBoundingClientRect();
+            const x = e.clientX - boundingBox.left;
+            const y = e.clientY - boundingBox.top;
+            glowEffect.style.setProperty("--cursor-x", `${x}px`);
+            glowEffect.style.setProperty("--cursor-y", `${y}px`);
+        });
     }
 });
