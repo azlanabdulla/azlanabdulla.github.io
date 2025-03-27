@@ -1,14 +1,19 @@
-// script.js
-async function askNeoSphere() {
-    const question = document.getElementById("question").value;
-    
-    if (!question) {
-        alert("Please enter a question!");
+function processImage() {
+    const imageUpload = document.getElementById('imageUpload').files[0];
+    if (!imageUpload) {
+        alert('Please select an image first.');
         return;
     }
+    const formData = new FormData();
+    formData.append('image', imageUpload);
     
-    const response = await fetch("http://127.0.0.1:8000/ask/?question=" + encodeURIComponent(question));
-    const data = await response.json();
-    
-    document.getElementById("response").innerText = "NeoSphere: " + data.answer;
+    fetch('/analyze', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('output').innerText = 'Detected: ' + data.result;
+    })
+    .catch(error => console.error('Error:', error));
 }
