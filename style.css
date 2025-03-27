@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #121212;
@@ -7,74 +8,50 @@ body {
     padding: 0;
 }
 
-.chat-container {
-    width: 300px;
-    margin: auto;
-    background-color: #1e1e1e;
+header {
+    background: linear-gradient(90deg, #ff8c00, #ff0080);
+    padding: 20px;
+    font-size: 1.5em;
+}
+
+section {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    background: #1e1e1e;
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    text-align: center;
+}
+
+.skill {
+    background: #333;
     padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#chat-box {
-    width: 100%;
-    height: 400px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-}
-
-.message {
-    padding: 10px;
-    border-radius: 10px;
-    margin: 5px;
-    max-width: 80%;
-}
-
-.user-message {
-    background-color: #0052cc;
-    color: white;
-    align-self: flex-end;
-}
-
-.bot-message {
-    background-color: #333;
-    color: white;
-    align-self: flex-start;
-}
-
-.input-container {
-    display: flex;
-    width: 100%;
-    padding: 5px;
-    background-color: #222;
-    border-top: 1px solid #444;
-}
-
-#user-input {
-    flex-grow: 1;
-    padding: 8px;
-    border: none;
     border-radius: 5px;
-    background-color: #333;
-    color: white;
 }
 
-.send-btn {
-    background-color: #0052cc;
-    color: white;
-    border: none;
+.project {
+    margin: 10px 0;
     padding: 10px;
-    margin-left: 5px;
+    background: #222;
     border-radius: 5px;
-    cursor: pointer;
+    transition: 0.3s;
 }
 
-.send-btn:hover {
-    background-color: #0040a0;
+.project:hover {
+    background: #ff8c00;
+    color: black;
+    transform: scale(1.05);
+}
+
+footer {
+    padding: 10px;
+    background: #000;
+    margin-top: 20px;
 }
