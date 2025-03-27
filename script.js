@@ -1,3 +1,5 @@
+const backendUrl = "https://4f733bac-3889-43ea-9dc1-b2de6101b63f-00-2ns6wq4vt04d6.sisko.replit.dev";  // Your Replit backend URL
+
 function sendMessage() {
     let userInput = document.getElementById('user-input').value.trim();
     if (userInput === '') return;
@@ -14,8 +16,8 @@ function sendMessage() {
     document.getElementById('user-input').value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Send request to backend
-    fetch('/chat', {
+    // Send request to Replit backend
+    fetch(`${backendUrl}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userInput })
