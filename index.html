@@ -8,13 +8,15 @@
 </head>
 <body>
     <header>
-        <h1>SCAAR AI - Your Smart Assistant</h1>
+        <h1>SCAAR AI</h1>
     </header>
     <main>
         <div class="chat-container">
             <div id="chat-box"></div>
-            <input type="text" id="user-input" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">&#10148;</button>
+            </div>
         </div>
     </main>
     <script src="script.js"></script>
