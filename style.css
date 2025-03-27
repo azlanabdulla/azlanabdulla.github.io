@@ -1,107 +1,70 @@
-/* General Styles */
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #0a0a0a;
+    font-family: 'SF Pro Display', sans-serif;
+    background: linear-gradient(to top, #87CEEB, #1E3C72);
     color: #fff;
     overflow-x: hidden;
-}
-
-h1, h2, h3 {
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    -webkit-font-smoothing: antialiased;
     text-align: center;
 }
-
-.section {
-    padding: 60px 20px;
-    text-align: center;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Hero Section */
 .hero {
     height: 100vh;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+.hero {
+position: relative;
+height: 100vh;
+background: url('sky.gif') center/cover no-repeat;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+color: #fff;
+overflow: hidden;
+}
+.text-container {
     position: relative;
-    background: linear-gradient(135deg, #1e1e1e, #0a0a0a);
-}
-
-.hero .content {
-    text-align: center;
-    z-index: 2;
-}
-
-.hero h1 {
-    font-size: 3rem;
+    font-size: 10rem;
     font-weight: bold;
-    color: #ffcc00;
+    text-transform: uppercase;
+    color: black;
+    -webkit-text-stroke: 2px white;
+    opacity: 20%;
 }
-
-.hero p {
-    font-size: 1.2rem;
-    opacity: 0.8;
+.glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: black;
+    -webkit-text-stroke: 4px transparent;
+    pointer-events: none;
+    background: linear-gradient(90deg, #ff0000, #ffff00, #00ffff, #ff00ff, #ff0000);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    mask: radial-gradient(circle 80px at var(--cursor-x) var(--cursor-y), white 70%, transparent 100%);
+    -webkit-mask: radial-gradient(circle 80px at var(--cursor-x) var(--cursor-y), white 70%, transparent 100%);
+    opacity: 100%;
+    animation: rgbFlow 2s infinite linear;
 }
-
-/* Skills Grid */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    justify-content: center;
+@keyframes rgbFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 200% 50%; }
+    100% { background-position: 0% 50%; }
 }
-
-.skill {
-    background: #222;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s ease;
+@media (max-width: 768px) {
+    .text-container {
+        font-size: 5rem;
+    }
 }
-
-.skill:hover {
-    transform: translateY(-5px);
-    background: #ffcc00;
-    color: #0a0a0a;
-}
-
-/* Projects Section */
-.project-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.project {
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    width: 280px;
-    transition: transform 0.3s;
-}
-
-.project:hover {
-    transform: scale(1.05);
-    background: #ffcc00;
-    color: #0a0a0a;
-}
-
-/* Contact Section */
-#contact a {
-    color: #ffcc00;
-    text-decoration: none;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #111;
+@media (max-width: 480px) {
+    .text-container {
+        font-size: 3rem;
+    }
 }
