@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCAAR AI - Chatbot</title>
+    <title>SCAAR AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>SCAAR AI</h1>
-    </header>
-    <main>
-        <div class="chat-container">
-            <div id="chat-box"></div>
-            <div class="input-area">
-                <input type="text" id="user-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()">&#10148;</button>
-            </div>
+
+    <h1>SCAAR AI</h1>
+
+    <div class="chat-container">
+        <div id="chat-box"></div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button class="send-btn" onclick="sendMessage()">➤</button>
         </div>
-    </main>
+    </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>
