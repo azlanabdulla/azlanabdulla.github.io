@@ -1,57 +1,107 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
-    text-align: center;
     margin: 0;
-    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    overflow-x: hidden;
 }
 
-header {
-    background: linear-gradient(90deg, #ff8c00, #ff0080);
-    padding: 20px;
-    font-size: 1.5em;
+h1, h2, h3 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
 }
 
-section {
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 800px;
-    background: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+.section {
+    padding: 60px 20px;
+    text-align: center;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, #1e1e1e, #0a0a0a);
+}
+
+.hero .content {
+    text-align: center;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+/* Skills Grid */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    text-align: center;
+    gap: 20px;
+    justify-content: center;
 }
 
 .skill {
-    background: #333;
-    padding: 10px;
-    border-radius: 5px;
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.skill:hover {
+    transform: translateY(-5px);
+    background: #ffcc00;
+    color: #0a0a0a;
+}
+
+/* Projects Section */
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
 .project {
-    margin: 10px 0;
-    padding: 10px;
     background: #222;
-    border-radius: 5px;
-    transition: 0.3s;
+    padding: 20px;
+    border-radius: 10px;
+    width: 280px;
+    transition: transform 0.3s;
 }
 
 .project:hover {
-    background: #ff8c00;
-    color: black;
     transform: scale(1.05);
+    background: #ffcc00;
+    color: #0a0a0a;
 }
 
+/* Contact Section */
+#contact a {
+    color: #ffcc00;
+    text-decoration: none;
+}
+
+/* Footer */
 footer {
-    padding: 10px;
-    background: #000;
-    margin-top: 20px;
+    text-align: center;
+    padding: 20px;
+    background: #111;
 }
