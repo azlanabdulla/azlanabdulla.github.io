@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeoSphere AI</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>SCAAR AI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>NeoSphere AI</h1>
-        <input type="text" id="question" placeholder="Ask something...">
-        <button onclick="askNeoSphere()">Ask</button>
-        <p id="response"></p>
-    </div>
-
+    <header>
+        <h1>SCAAR AI</h1>
+    </header>
+    <main>
+        <div class="container">
+            <input type="file" id="imageUpload" accept="image/*">
+            <button onclick="processImage()">Analyze Image</button>
+            <div id="output"></div>
+        </div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
