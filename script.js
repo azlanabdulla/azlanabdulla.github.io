@@ -3,8 +3,10 @@ function sendMessage() {
     if (userInput.trim() === '') return;
     
     let chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+    let userMessage = `<div class="message user-message">${userInput}</div>`;
+    chatBox.innerHTML += userMessage;
     document.getElementById('user-input').value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
     
     fetch('/chat', {
         method: 'POST',
@@ -13,8 +15,14 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
-        chatBox.innerHTML += `<p><strong>SCAAR:</strong> ${data.response}</p>`;
+        let botMessage = `<div class="message bot-message">${data.response}</div>`;
+        chatBox.innerHTML += botMessage;
         chatBox.scrollTop = chatBox.scrollHeight;
     })
     .catch(error => console.error('Error:', error));
+}
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
 }
