@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'SF Pro Display', sans-serif;
-    background: linear-gradient(to top, #87CEEB, #1E3C72);
+    background: url('sky.gif') center/cover no-repeat;
     color: #fff;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -67,4 +67,73 @@ overflow: hidden;
     .text-container {
         font-size: 3rem;
     }
+}
+
+
+#about {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 80px 20px;
+    margin-top: 100px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.skill {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.skill:hover {
+    transform: scale(1.05);
+}
+
+
+
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.project {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 25px;
+    border-radius: 15px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.project:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+
+
+#contact {
+    padding: 50px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    margin-top: 50px;
+}
+
+
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #101010;
+    font-size: 0.9rem;
 }
