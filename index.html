@@ -2,159 +2,176 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TYPE ASAP</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    .correct { color: #10B981; }
-    .incorrect { color: #EF4444; }
+    body {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #121826;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      padding: 20px;
+      background-color: #1e293b;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      text-align: center;
+      color: #22d3ee;
+    }
+    #stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    #testText {
+      background-color: #334155;
+      padding: 15px;
+      border-radius: 6px;
+      min-height: 100px;
+      font-size: 1.2em;
+      white-space: pre-wrap;
+    }
+    .correct {
+      color: lightgreen;
+    }
+    .incorrect {
+      color: red;
+    }
+    #inputArea {
+      margin-top: 10px;
+      width: 100%;
+      font-size: 1.2em;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    #inputArea:focus {
+      outline: none;
+    }
+    .accuracy-stats {
+      margin-top: 20px;
+      font-size: 1em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .accuracy-stats div {
+      color: #60a5fa;
+    }
+    .highlight {
+      border-bottom: 2px dashed #facc15;
+    }
   </style>
 </head>
-<body class="bg-gray-900 text-white font-mono min-h-screen flex items-center justify-center px-4">
-  <div class="w-full max-w-4xl p-6 rounded-lg bg-gray-800 shadow-xl">
-    <h1 class="text-4xl font-bold text-center mb-6 text-green-400">TYPE ASAP</h1>
-
-    <div class="flex flex-col sm:flex-row justify-between text-sm sm:text-base mb-4">
-      <p><strong>Time Left:</strong> <span id="timer">60</span>s</p>
-      <p><strong>WPM:</strong> <span id="wpm">0</span></p>
-      <p><strong>Accuracy:</strong> <span id="accuracy">100%</span></p>
+<body>
+  <div class="container">
+    <h1>TYPE ASAP</h1>
+    <div id="stats">
+      <div>Time Left: <span id="timer">60s</span></div>
+      <div>WPM: <span id="wpm">0</span></div>
+      <div>Accuracy: <span id="accuracy">0%</span></div>
     </div>
-
-    <div id="testText" class="bg-gray-700 p-4 rounded h-40 overflow-y-auto text-lg leading-relaxed mb-4"></div>
-
-    <textarea id="typingArea" rows="4" class="w-full p-3 rounded text-black focus:outline-none" placeholder="Start typing here..." disabled></textarea>
-
-    <div class="mt-6">
-      <p class="text-xl mb-2 font-semibold text-blue-400">Alphabet & Symbol Accuracy:</p>
-      <div id="letterReport" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm"></div>
-    </div>
+    <div id="testText"></div>
+    <textarea id="inputArea" placeholder="Start typing here..." autofocus></textarea>
+    <div class="accuracy-stats" id="accuracyDetails"></div>
   </div>
 
   <script>
-    const sampleParagraphs = [
-      "The quick brown fox jumps over the lazy dog.",
-      "Typing is a fundamental skill for coders.",
-      "Improve your speed and accuracy with practice.",
-      "Keep calm and keep typing.",
-      "Coding requires logic, patience, and precision.",
-      "Fast fingers make better typists!",
-      "Type smart, type sharp, type fast."
-    ];
+    const testText = `Keep calm and keep typing. Fast fingers make better typists! Type smart, type sharp, type fast. Keep calm and keep typing. The quick brown fox jumps over the lazy dog. Keep calm and keep typing. Improve your speed and accuracy with practice. Improve your speed and accuracy with practice. Type smart, type sharp, type fast. Keep calm and keep typing. The quick brown fox jumps over the lazy dog.`;
 
-    const typingArea = document.getElementById("typingArea");
-    const testTextContainer = document.getElementById("testText");
-    const timerDisplay = document.getElementById("timer");
-    const wpmDisplay = document.getElementById("wpm");
-    const accuracyDisplay = document.getElementById("accuracy");
-    const letterReport = document.getElementById("letterReport");
+    const testDisplay = document.getElementById('testText');
+    const inputArea = document.getElementById('inputArea');
+    const timerElement = document.getElementById('timer');
+    const wpmElement = document.getElementById('wpm');
+    const accuracyElement = document.getElementById('accuracy');
+    const accuracyDetails = document.getElementById('accuracyDetails');
 
-    let testText = "";
-    let timer = 60;
-    let interval;
-    let startTime;
-    let timerStarted = false;
-    let finished = false;
+    let timeLeft = 60;
+    let timer;
+    let started = false;
+    let correctCount = 0;
+    let totalTyped = 0;
     let letterStats = {};
 
-    function generateText() {
-      while (testText.length < 400) {
-        const randomText = sampleParagraphs[Math.floor(Math.random() * sampleParagraphs.length)];
-        testText += " " + randomText;
-      }
-      updateTestDisplay();
-    }
-
     function updateTestDisplay() {
-      const typed = typingArea.value;
-      let displayHTML = "";
-
+      const typed = inputArea.value;
+      let displayHTML = '';
       for (let i = 0; i < testText.length; i++) {
         const expectedChar = testText[i];
         const typedChar = typed[i];
-
         if (typedChar == null) {
           displayHTML += `<span>${expectedChar}</span>`;
         } else if (typedChar === expectedChar) {
-          displayHTML += `<span class='correct'>${expectedChar}</span>`;
+          displayHTML += `<span class="correct">${expectedChar}</span>`;
         } else {
-          displayHTML += `<span class='incorrect'>${expectedChar}</span>`;
+          displayHTML += `<span class="incorrect">${expectedChar}</span>`;
         }
       }
-
-      testTextContainer.innerHTML = displayHTML;
-    }
-
-    function startTyping() {
-      if (!timerStarted) {
-        startTime = new Date();
-        timerStarted = true;
-        interval = setInterval(updateTimer, 1000);
-      }
-      updateTestDisplay();
-      updateStats();
-    }
-
-    function updateTimer() {
-      timer--;
-      timerDisplay.textContent = timer;
-
-      if (timer <= 0) {
-        clearInterval(interval);
-        finished = true;
-        typingArea.disabled = true;
-        updateTestDisplay();
-        updateStats();
-      }
+      testDisplay.innerHTML = displayHTML;
     }
 
     function updateStats() {
-      const typedText = typingArea.value;
-      let correctCount = 0;
-
-      for (let i = 0; i < typedText.length; i++) {
-        const expected = testText[i]?.toLowerCase();
-        const typed = typedText[i]?.toLowerCase();
-
-        if ((expected >= 'a' && expected <= 'z') || /[.,!?'\";:()\\-]/.test(expected)) {
-          if (!letterStats[expected]) letterStats[expected] = { correct: 0, total: 0 };
-          letterStats[expected].total++;
-          if (typed === expected) {
-            letterStats[expected].correct++;
-          }
+      const typed = inputArea.value;
+      correctCount = 0;
+      totalTyped = typed.length;
+      letterStats = {};
+      for (let i = 0; i < typed.length; i++) {
+        const expected = testText[i];
+        const typedChar = typed[i];
+        if (!letterStats[expected]) letterStats[expected] = { correct: 0, total: 0 };
+        letterStats[expected].total++;
+        if (typedChar === expected) {
+          correctCount++;
+          letterStats[expected].correct++;
         }
-
-        if (typed === expected) correctCount++;
       }
 
-      const elapsedMinutes = (new Date() - startTime) / 60000;
-      const wordsTyped = typedText.trim().split(/\s+/).length;
-      const wpm = Math.round(wordsTyped / elapsedMinutes);
-      const accuracy = ((correctCount / typedText.length) * 100).toFixed(1);
+      const wordsTyped = typed.trim().split(/\s+/).length;
+      const wpm = Math.round((wordsTyped / (60 - timeLeft)) * 60) || 0;
+      const accuracy = totalTyped > 0 ? Math.round((correctCount / totalTyped) * 100) : 0;
+      wpmElement.textContent = wpm;
+      accuracyElement.textContent = accuracy + '%';
 
-      wpmDisplay.textContent = isNaN(wpm) ? 0 : wpm;
-      accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
-
-      updateLetterReport();
-    }
-
-    function updateLetterReport() {
-      letterReport.innerHTML = "";
-      for (let letter in letterStats) {
-        const stat = letterStats[letter];
-        const percent = stat.total ? ((stat.correct / stat.total) * 100).toFixed(0) : "-";
-        letterReport.innerHTML += `<div class="text-gray-200">${letter.toUpperCase()}: <span class="text-${percent >= 80 ? 'green' : 'red'}-400">${percent}%</span></div>`;
+      let detailsHTML = '';
+      for (const key in letterStats) {
+        const stat = letterStats[key];
+        const acc = Math.round((stat.correct / stat.total) * 100);
+        detailsHTML += `<div>${key}: ${acc}%</div>`;
       }
+      accuracyDetails.innerHTML = detailsHTML;
     }
 
-    typingArea.addEventListener("input", () => {
-      if (!finished) startTyping();
+    function endTest() {
+      clearInterval(timer);
+      inputArea.disabled = true;
+    }
+
+    inputArea.addEventListener('input', () => {
+      if (!started) {
+        started = true;
+        timer = setInterval(() => {
+          timeLeft--;
+          timerElement.textContent = timeLeft + 's';
+          if (timeLeft <= 0) {
+            endTest();
+          }
+        }, 1000);
+      }
+      updateTestDisplay();
+      updateStats();
     });
 
-    window.onload = () => {
-      generateText();
-      typingArea.disabled = false;
-      typingArea.focus();
-    };
+    // Initialize test text
+    updateTestDisplay();
   </script>
 </body>
 </html>
