@@ -1,71 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="images/logo.png">
-
-    <title>Dragon</title>
-    <style>
-        
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body{
-            background-color: #D2D2D2;
-            background-image:
-            repeating-linear-gradient(
-                to right, transparent 0 100px,
-                #25283b22 100px 101px
-            ),
-            repeating-linear-gradient(
-                to bottom, transparent 0 100px,
-                #25283b22 100px 101px
-            );
-        }
-        
-        body::before{
-            position: absolute;
-            width: min(1400px, 90vw);
-            top: 10%;
-            left: 50%;
-            height: 90%;
-            transform: translateX(-50%);
-            content: '';
-            background-image: url(images/bg.png);
-            background-size: 100%;
-            background-repeat: no-repeat;
-            background-position: top center;
-            pointer-events: none;
-        }
-    </style>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TYPE ASAP</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .correct { color: #10B981; }
+    .incorrect { color: #EF4444; }
+  </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white font-mono min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-4xl p-6 rounded-lg bg-gray-800 shadow-xl">
+    <h1 class="text-4xl font-bold text-center mb-6 text-green-400">TYPE ASAP</h1>
 
-    <div class="banner">
-        <div class="slider" style="--quantity: 10">
-            <div class="item" style="--position: 1"><img src="images/dragon_1.jpg" alt=""></div>
-            <div class="item" style="--position: 2"><img src="images/dragon_2.jpg" alt=""></div>
-            <div class="item" style="--position: 3"><img src="images/dragon_3.jpg" alt=""></div>
-            <div class="item" style="--position: 4"><img src="images/dragon_4.jpg" alt=""></div>
-            <div class="item" style="--position: 5"><img src="images/dragon_5.jpg" alt=""></div>
-            <div class="item" style="--position: 6"><img src="images/dragon_6.jpg" alt=""></div>
-            <div class="item" style="--position: 7"><img src="images/dragon_7.jpg" alt=""></div>
-            <div class="item" style="--position: 8"><img src="images/dragon_8.jpg" alt=""></div>
-            <div class="item" style="--position: 9"><img src="images/dragon_9.jpg" alt=""></div>
-            <div class="item" style="--position: 10"><img src="images/dragon_10.jpg" alt=""></div>
-        </div>
-        <div class="content">
-            <h1 data-content="DRAGON">
-                DRAGON
-            </h1>
-        
-            <div class="model"></div>
-        </div>
+    <div class="flex flex-col sm:flex-row justify-between text-sm sm:text-base mb-4">
+      <p><strong>Time Left:</strong> <span id="timer">60</span>s</p>
+      <p><strong>WPM:</strong> <span id="wpm">0</span></p>
+      <p><strong>Accuracy:</strong> <span id="accuracy">100%</span></p>
     </div>
-    
+
+    <div id="testText" class="bg-gray-700 p-4 rounded h-40 overflow-y-auto text-lg leading-relaxed mb-4"></div>
+
+    <textarea id="typingArea" rows="4" class="w-full p-3 rounded text-black focus:outline-none" placeholder="Start typing here..." disabled></textarea>
+
+    <div class="mt-6">
+      <p class="text-xl mb-2 font-semibold text-blue-400">Alphabet & Symbol Accuracy:</p>
+      <div id="letterReport" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm"></div>
+    </div>
+  </div>
+
+  <script>
+    const sampleParagraphs = [
+      "The quick brown fox jumps over the lazy dog.",
+      "Typing is a fundamental skill for coders.",
+      "Improve your speed and accuracy with practice.",
+      "Keep calm and keep typing.",
+      "Coding requires logic, patience, and precision.",
+      "Fast fingers make better typists!",
+      "Type smart, type sharp, type fast."
+    ];
+
+    const typingArea = document.getElementById("typingArea");
+    const testTextContainer = document.getElementById("testText");
+    const timerDisplay = document.getElementById("timer");
+    const wpmDisplay = document.getElementById("wpm");
+    const accuracyDisplay = document.getElementById("accuracy");
+    const letterReport = document.getElementById("letterReport");
+
+    let testText = "";
+    let timer = 60;
+    let interval;
+    let startTime;
+    let timerStarted = false;
+    let finished = false;
+    let letterStats = {};
+
+    function generateText() {
+      while (testText.length < 400) {
+        const randomText = sampleParagraphs[Math.floor(Math.random() * sampleParagraphs.length)];
+        testText += " " + randomText;
+      }
+      updateTestDisplay();
+    }
+
+    function updateTestDisplay() {
+      const typed = typingArea.value;
+      let displayHTML = "";
+
+      for (let i = 0; i < testText.length; i++) {
+        const expectedChar = testText[i];
+        const typedChar = typed[i];
+
+        if (typedChar == null) {
+          displayHTML += `<span>${expectedChar}</span>`;
+        } else if (typedChar === expectedChar) {
+          displayHTML += `<span class='correct'>${expectedChar}</span>`;
+        } else {
+          displayHTML += `<span class='incorrect'>${expectedChar}</span>`;
+        }
+      }
+
+      testTextContainer.innerHTML = displayHTML;
+    }
+
+    function startTyping() {
+      if (!timerStarted) {
+        startTime = new Date();
+        timerStarted = true;
+        interval = setInterval(updateTimer, 1000);
+      }
+      updateTestDisplay();
+      updateStats();
+    }
+
+    function updateTimer() {
+      timer--;
+      timerDisplay.textContent = timer;
+
+      if (timer <= 0) {
+        clearInterval(interval);
+        finished = true;
+        typingArea.disabled = true;
+        updateTestDisplay();
+        updateStats();
+      }
+    }
+
+    function updateStats() {
+      const typedText = typingArea.value;
+      let correctCount = 0;
+
+      for (let i = 0; i < typedText.length; i++) {
+        const expected = testText[i]?.toLowerCase();
+        const typed = typedText[i]?.toLowerCase();
+
+        if ((expected >= 'a' && expected <= 'z') || /[.,!?'\";:()\\-]/.test(expected)) {
+          if (!letterStats[expected]) letterStats[expected] = { correct: 0, total: 0 };
+          letterStats[expected].total++;
+          if (typed === expected) {
+            letterStats[expected].correct++;
+          }
+        }
+
+        if (typed === expected) correctCount++;
+      }
+
+      const elapsedMinutes = (new Date() - startTime) / 60000;
+      const wordsTyped = typedText.trim().split(/\s+/).length;
+      const wpm = Math.round(wordsTyped / elapsedMinutes);
+      const accuracy = ((correctCount / typedText.length) * 100).toFixed(1);
+
+      wpmDisplay.textContent = isNaN(wpm) ? 0 : wpm;
+      accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
+
+      updateLetterReport();
+    }
+
+    function updateLetterReport() {
+      letterReport.innerHTML = "";
+      for (let letter in letterStats) {
+        const stat = letterStats[letter];
+        const percent = stat.total ? ((stat.correct / stat.total) * 100).toFixed(0) : "-";
+        letterReport.innerHTML += `<div class="text-gray-200">${letter.toUpperCase()}: <span class="text-${percent >= 80 ? 'green' : 'red'}-400">${percent}%</span></div>`;
+      }
+    }
+
+    typingArea.addEventListener("input", () => {
+      if (!finished) startTyping();
+    });
+
+    window.onload = () => {
+      generateText();
+      typingArea.disabled = false;
+      typingArea.focus();
+    };
+  </script>
 </body>
 </html>
