@@ -5,6 +5,7 @@ const sendBtn = document.getElementById('sendBtn');
 const memory = {
   username: 'Azlan',
   scaarName: 'SCAAR',
+  history: [],
   notes: [],
   reminders: [],
   tasks: [],
@@ -20,27 +21,26 @@ function appendMessage(sender, text) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-function cmd(text, keyword) {
-  return text.trim().toLowerCase() === keyword.toLowerCase();
-}
-
 function getSCAARResponse(text) {
+  memory.history.push({ user: text });
+
   const t = text.toLowerCase();
 
-  // Greetings & Identity
-  if (cmd(t, "hello") || cmd(t, "hi")) return `Hello, ${memory.username}`;
-  if (t.includes("your name")) return `My name is ${memory.scaarName}, your assistant.`;
+  // GREETINGS
+  if (["hi", "hello"].includes(t)) return `Hello, ${memory.username}`;
+  if (["okey"].includes(t)) return "👍";
+  if (t.includes("your name")) return `I'm ${memory.scaarName}, your assistant.`;
   if (t.includes("my name")) return `Your name is ${memory.username}.`;
   if (t.includes("how are you")) return "I'm fine, thank you.";
-  if (["bye", "goodbye", "exit"].includes(t)) return "Goodbye 👋";
+  if (["bye", "exit", "quit"].includes(t)) return "Goodbye 👋";
   if (t.includes("are you there")) return `At your service, ${memory.username}!`;
 
-  // Time & Date
+  // TIME & DATE
   if (t.includes("time")) return `⏰ The current time is ${new Date().toLocaleTimeString()}`;
   if (t.includes("date")) return `📅 Today's date is ${new Date().toLocaleDateString()}`;
 
-  // Timer
-  if (t.includes("set timer") || t.includes("start timer")) {
+  // TIMER
+  if (t.includes("start timer") || t.includes("set timer")) {
     if (memory.timer) return "⏳ Timer is already running.";
     memory.timer = setTimeout(() => {
       appendMessage('scaar', '⏰ Timer finished!');
@@ -57,19 +57,19 @@ function getSCAARResponse(text) {
     return "No timer running.";
   }
 
-  // Notes
+  // NOTES
   if (t.includes("create note") || t.includes("add note")) {
     const note = text.split("note").pop().trim();
     memory.notes.push(note);
     return `📝 Note saved: "${note}"`;
   }
-  if (t.includes("view note")) return memory.notes.length ? `📋 Notes:\n- ${memory.notes.join('\n- ')}` : "No notes available.";
+  if (t.includes("view note")) return memory.notes.length ? `📋 Notes:\n- ${memory.notes.join('\n- ')}` : "No notes.";
   if (t.includes("clear my note")) {
     memory.notes = [];
     return "🧹 Notes cleared.";
   }
 
-  // Reminders
+  // REMINDERS
   if (t.includes("add reminder")) {
     const reminder = text.split("reminder").pop().trim();
     memory.reminders.push(reminder);
@@ -81,7 +81,7 @@ function getSCAARResponse(text) {
     return "🗑️ Reminders deleted.";
   }
 
-  // Tasks
+  // TASKS
   if (t.includes("add task")) {
     const task = text.split("task").pop().trim();
     memory.tasks.push(task);
@@ -93,10 +93,10 @@ function getSCAARResponse(text) {
     return "🗑️ Tasks deleted.";
   }
 
-  // Important Info
+  // IMPORTANT DETAILS
   if (t.includes("store id") || t.includes("save important details")) {
     memory.importantDetails = text.split("details").pop().trim();
-    return "🔐 Important details stored securely.";
+    return "🔐 Important details stored.";
   }
   if (t.includes("show id")) return memory.importantDetails ? `📎 Stored Details: ${memory.importantDetails}` : "No stored details.";
   if (t.includes("delete id")) {
@@ -104,40 +104,39 @@ function getSCAARResponse(text) {
     return "🗑️ Important details deleted.";
   }
 
-  // Math
+  // MATH
   if (/\d+\s*[\+\-\*\/]\s*\d+/.test(t)) {
     try {
       return `🧮 Result: ${eval(t)}`;
     } catch {
-      return "Couldn't calculate that.";
+      return "Couldn't calculate.";
     }
   }
 
-  // Joke / Story
+  // JOKE
   if (t.includes("joke")) return "😂 Why don’t scientists trust atoms? Because they make up everything!";
-  if (t.includes("story")) return "📖 Once upon a time, there was a curious coder who built a smart AI assistant. And you're using it right now!";
+  if (t.includes("story")) return "📖 Once upon a time, a curious coder created SCAAR, and it changed everything...";
 
-  // Play music
+  // MUSIC
   if (t.includes("play music")) {
-    const audio = new Audio("music.mp3"); // Add music.mp3 in the same folder
+    const audio = new Audio('music.mp3'); // Add your own file
     audio.play();
     return "🎵 Playing music...";
   }
 
-  // Lock Device (Windows)
+  // LOCK DEVICE (simulated)
   if (t.includes("lock my device")) {
-    if (navigator.userAgent.includes("Windows")) {
-      const shell = new ActiveXObject("WScript.Shell");
-      shell.Run("rundll32.exe user32.dll,LockWorkStation");
-      return "🔒 Locking device...";
-    }
-    return "🔒 Device lock works only on Windows.";
+    return "🔒 Locking... (simulated; not real lock)";
   }
 
-  // Search fallback
-  const searchQuery = encodeURIComponent(text);
-  window.open(`https://www.google.com/search?q=${searchQuery}`, "_blank");
-  return `🔍 I wasn't sure, so I searched Google for: "${text}"`;
+  // SEARCH ON GOOGLE
+  if (t.includes("search") || t.includes("google")) {
+    const query = text.split("search").pop().trim();
+    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+    return `🔎 Searching Google for "${query}"...`;
+  }
+
+  return `You said: "${text}". I'm still learning, but I'm here to help!`;
 }
 
 function handleSend() {
