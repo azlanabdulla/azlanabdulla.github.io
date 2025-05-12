@@ -4,107 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SCAAR Voice Assistant</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      font-family: sans-serif;
-      text-align: center;
-    }
-    #voiceImage {
-      width: 200px;
-      height: auto;
-      margin-bottom: 20px;
-    }
-    #transcript {
-      font-size: 1.2rem;
-      padding: 0 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>SCAAR AI</h1>
   <img id="voiceImage" src="voice-unscreen.gif" alt="Voice Assistant" />
   <div id="transcript">Tap anywhere to activate SCAAR...</div>
 
-  <script>
-    const transcriptEl = document.getElementById("transcript");
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const Synth = window.speechSynthesis;
-
-    if (!SpeechRecognition || !Synth) {
-      transcriptEl.textContent = "Your browser does not support speech recognition or synthesis.";
-    } else {
-      const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = false;
-      recognition.continuous = false;
-
-      function speak(message, callback) {
-        const utter = new SpeechSynthesisUtterance(message);
-        utter.onstart = () => {
-          transcriptEl.textContent = `SCAAR: ${message}`;
-        };
-        utter.onend = () => {
-          if (callback) callback();
-        };
-        Synth.cancel(); // clear any pending voices
-        Synth.speak(utter);
-      }
-
-      function handleCommand(text) {
-        if (text.includes("time")) {
-          return `The time is ${new Date().toLocaleTimeString()}`;
-        }
-        if (text.includes("date")) {
-          return `Today is ${new Date().toLocaleDateString()}`;
-        }
-        if (text.includes("hello") || text.includes("hi")) {
-          return "Hello Azlan, I'm SCAAR. How can I assist you today?";
-        }
-        if (text.includes("open google")) {
-          window.open("https://www.google.com", "_blank");
-          return "Opening Google.";
-        }
-        if (text.includes("open youtube")) {
-          window.open("https://www.youtube.com", "_blank");
-          return "Opening YouTube.";
-        }
-        if (text.includes("joke")) {
-          return "Why don’t skeletons fight each other? Because they don’t have the guts!";
-        }
-        return "Sorry, I didn't understand. Can you say that again?";
-      }
-
-      function listenAndRespond() {
-        recognition.start();
-        recognition.onresult = (event) => {
-          const text = event.results[0][0].transcript.toLowerCase();
-          transcriptEl.textContent = `You: ${text}`;
-          const reply = handleCommand(text);
-          speak(reply, () => {
-            setTimeout(() => listenAndRespond(), 1000); // restart after speaking
-          });
-        };
-        recognition.onerror = (e) => {
-          transcriptEl.textContent = `Error: ${e.error}`;
-        };
-      }
-
-      // Wait for one user interaction to unlock mic/speaker access
-      document.body.addEventListener("click", () => {
-        speak("SCAAR activated. Listening for your command.", () => {
-          listenAndRespond();
-        });
-      }, { once: true });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
