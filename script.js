@@ -91,7 +91,7 @@ async function handleCommand(text) {
     return null;
   }
 
-  if (text.includes("scaar are you there") || text.includes("are you there scaar")) {
+  if (text.includes("are you there") || text.includes("are you there")) {
     return "At your service, sir.";
   }
 
