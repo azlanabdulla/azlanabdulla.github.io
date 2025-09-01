@@ -1,16 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SCAAR Voice Assistant</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Interactive Futuristic Neural Web</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: radial-gradient(1200px 800px at 50% 50%, #061423 0%, #02070f 40%, #000 100%);
+    overflow: hidden;
+    touch-action: none; /* enable custom pan/pinch */
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  #hint {
+    position: fixed; inset: auto 12px 12px 12px;
+    color: #a8eaffcc; font-size: 12px; line-height: 1.3;
+    letter-spacing: .2px; user-select: none; pointer-events: none;
+    text-align: center;
+  }
+</style>
 </head>
 <body>
-  <h1>SCAAR AI</h1>
-  <img id="voiceImage" src="assets/light-unscreen.gif" alt="Voice Assistant" />
-  <div id="transcript">Tap anywhere to activate SCAAR...</div>
+<canvas id="net"></canvas>
 
-  <script src="script.js"></script>
+
+<script>
+(() => {
+  // ---------- Canvas & HiDPI ----------
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let W = 0, H = 0, DPR = Math.max(1, Math.min(2, devicePixelRatio || 1)); // cap DPR for perf
+
+  function resize() {
+    W = innerWidth; H = innerHeight;
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+  addEventListener('resize', resize, { passive: true });
+  resize();
+
+  // ---------- World transform (pan/zoom) ----------
+  let scale = 1;
+  let tx = 0, ty = 0; // translation in screen pixels (post-scale)
+
+  function applyTransform() {
+    ctx.setTransform(scale * DPR, 0, 0, scale * DPR, (tx) * DPR, (ty) * DPR);
+  }
+  function screenToWorld(px, py) {
+    // invert transform
+    return { x: (px - tx) / scale, y: (py - ty) / scale };
+  }
+  function zoomAt(focusX, focusY, dz) {
+    const prev = scale;
+    scale = Math.max(0.3, Math.min(3, scale * dz));
+    const k = scale / prev;
+    // keep focus point stable
+    tx = focusX - (focusX - tx) * k;
+    ty = focusY - (focusY - ty) * k;
+  }
+
+  // ---------- Data ----------
+  const COLORS = ["#00f7ff","#00ff88","#ff00f7","#ff0055","#00b3ff","#ffb300","#a3ff00","#66ccff","#ff66cc"];
+  const N = 260;                 // node count
+  const RANGE = 180;             // link distance
+  const RANGE2 = RANGE * RANGE;  // squared
+  const nodes = [];
+  const grid = { size: 140, map: new Map() }; // simple spatial grid to accelerate neighbor queries
+  const sparks = [];
+
+  function makeNode() {
+    return {
+      x: (Math.random() - 0.5) * 2200,
+      y: (Math.random() - 0.5) * 1600,
+      vx: (Math.random() - 0.5) * 0.6,
+      vy: (Math.random() - 0.5) * 0.6,
+      baseR: 2 + Math.random() * 2.2,
+      r: 0,     // animated
+      hue: COLORS[(Math.random() * COLORS.length) | 0],
+      pulse: Math.random() * Math.PI * 2,
+    };
+  }
+  for (let i = 0; i < N; i++) nodes.push(makeNode());
+
+  // ---------- Input & Interaction ----------
+  let isPanning = false;
+  let lastPan = { x: 0, y: 0 };
+  let pointerCount = 0;
+  let pinchStart = null;
+  let cursor = { x: null, y: null, mode: 'repel', active: false };
+  let pressTimer = null;
+
+  function setCursorFromEvent(e) {
+    const x = ('clientX' in e) ? e.clientX : (e.touches && e.touches[0]?.clientX) || 0;
+    const y = ('clientY' in e) ? e.clientY : (e.touches && e.touches[0]?.clientY) || 0;
+    const w = screenToWorld(x, y);
+    cursor.x = w.x; cursor.y = w.y; cursor.active = true;
+  }
+
+  // Wheel zoom (desktop)
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const mx = e.clientX, my = e.clientY;
+    const dz = Math.pow(1.0015, -e.deltaY); // smooth zoom
+    zoomAt(mx, my, dz);
+  }, { passive: false });
+
+  // Pointer events for pan / pinch / attract
+  canvas.addEventListener('pointerdown', (e) => {
+    pointerCount++;
+    canvas.setPointerCapture(e.pointerId);
+    if (pointerCount === 1) {
+      isPanning = true;
+      lastPan.x = e.clientX;
+      lastPan.y = e.clientY;
+      setCursorFromEvent(e);
+      cursor.mode = 'repel';
+      pressTimer = setTimeout(() => { cursor.mode = 'attract'; }, 400); // long press
+    } else if (pointerCount === 2) {
+      // start pinch
+      clearTimeout(pressTimer);
+      cursor.active = false;
+      pinchStart = {
+        d: 0, scale0: scale, tx0: tx, ty0: ty,
+        c0: { x: 0, y: 0 }
+      };
+    }
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (pointerCount === 1 && isPanning) {
+      // pan
+      const dx = e.clientX - lastPan.x;
+      const dy = e.clientY - lastPan.y;
+      tx += dx;
+      ty += dy;
+      lastPan.x = e.clientX;
+      lastPan.y = e.clientY;
+      setCursorFromEvent(e);
+    } else if (pointerCount >= 2) {
+      // pinch zoom
+      const pts = getActivePointers();
+      if (pts.length >= 2) {
+        const c = midpoint(pts[0], pts[1]);
+        const d = dist(pts[0], pts[1]);
+        if (!pinchStart.d) {
+          pinchStart.d = d;
+          pinchStart.c0 = { x: c.x, y: c.y };
+        } else {
+          const dz = d / pinchStart.d;
+          scale = Math.max(0.3, Math.min(3, pinchStart.scale0 * dz));
+          // keep initial pinch center stable
+          const k = scale / pinchStart.scale0;
+          tx = pinchStart.c0.x - (pinchStart.c0.x - pinchStart.tx0) * k;
+          ty = pinchStart.c0.y - (pinchStart.c0.y - pinchStart.ty0) * k;
+        }
+      }
+    } else {
+      // hover move: update cursor in world space
+      setCursorFromEvent(e);
+    }
+  });
+
+  canvas.addEventListener('pointerup', (e) => {
+    pointerCount = Math.max(0, pointerCount - 1);
+    canvas.releasePointerCapture(e.pointerId);
+    clearTimeout(pressTimer);
+    if (pointerCount === 0) {
+      isPanning = false;
+      // If it was a tap (no big move, short press), spawn a spark
+      if (e.pressure === 0 || e.pointerType === 'mouse') {
+        const w = screenToWorld(e.clientX, e.clientY);
+        spawnSparkNear(w.x, w.y);
+      }
+      cursor.mode = 'repel';
+      cursor.active = false;
+    }
+  });
+  canvas.addEventListener('pointercancel', () => {
+    pointerCount = 0; isPanning = false; pinchStart = null; clearTimeout(pressTimer); cursor.active = false;
+  });
+
+  function getActivePointers() {
+    // Use Pointer Events' coalesced and existing touches if needed
+    // Here we query from last known touches; browsers track them implicitly per event
+    // For a robust approach you'd store pointers in a Map on pointerdown/move/up
+    // but this simplified flow is sufficient for MVP multi-touch pinch.
+    // NOTE: Some browsers require Touch Events—this works in modern Chrome/Safari/Edge.
+    return []; // placeholder not used because we compute pinch in-move only with event stream
+  }
+  // Helper for pinch: compute midpoint & distance given two Touch points
+  function midpoint(a, b) { return { x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 }; }
+  function dist(a, b) { const dx = a.clientX - b.clientX, dy = a.clientY - b.clientY; return Math.hypot(dx, dy); }
+
+  // Because getActivePointers() needs actual pointers, fallback using Touch Events for pinch:
+  let touchCache = [];
+  canvas.addEventListener('touchstart', (e) => {
+    touchCache = [...e.touches];
+  }, { passive: false });
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const t1 = e.touches[0], t2 = e.touches[1];
+      const c = midpoint(t1, t2), d = dist(t1, t2);
+      if (!pinchStart || !pinchStart.d) {
+        pinchStart = { d, scale0: scale, tx0: tx, ty0: ty, c0: { x: c.x, y: c.y } };
+      } else {
+        const dz = d / pinchStart.d;
+        scale = Math.max(0.3, Math.min(3, pinchStart.scale0 * dz));
+        const k = scale / pinchStart.scale0;
+        tx = pinchStart.c0.x - (pinchStart.c0.x - pinchStart.tx0) * k;
+        ty = pinchStart.c0.y - (pinchStart.c0.y - pinchStart.ty0) * k;
+      }
+    }
+    touchCache = [...e.touches];
+  }, { passive: false });
+  canvas.addEventListener('touchend', () => { touchCache = []; pinchStart = null; }, { passive: true });
+
+  // ---------- Physics & Effects ----------
+  function updateGrid() {
+    grid.map.clear();
+    const s = grid.size;
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      const gx = Math.floor(n.x / s);
+      const gy = Math.floor(n.y / s);
+      const key = gx + ',' + gy;
+      if (!grid.map.has(key)) grid.map.set(key, []);
+      grid.map.get(key).push(i);
+    }
+  }
+  function neighborsOf(n) {
+    const s = grid.size;
+    const gx = Math.floor(n.x / s);
+    const gy = Math.floor(n.y / s);
+    const res = [];
+    for (let oy = -1; oy <= 1; oy++) {
+      for (let ox = -1; ox <= 1; ox++) {
+        const key = (gx + ox) + ',' + (gy + oy);
+        const arr = grid.map.get(key);
+        if (arr) res.push(...arr);
+      }
+    }
+    return res;
+  }
+
+  function physics(dt) {
+    const mouseStrength = 18; // larger = more push/pull
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+
+      // gentle drift
+      n.x += n.vx * dt; n.y += n.vy * dt;
+
+      // soft bounds (spring back)
+      const B = 1600;
+      if (n.x < -B) { n.vx += 0.02; }
+      if (n.x >  B) { n.vx -= 0.02; }
+      if (n.y < -B) { n.vy += 0.02; }
+      if (n.y >  B) { n.vy -= 0.02; }
+
+      // cursor interaction
+      if (cursor.active && cursor.x != null) {
+        const dx = n.x - cursor.x;
+        const dy = n.y - cursor.y;
+        const d2 = dx*dx + dy*dy;
+        const R = 220, R2 = R*R;
+        if (d2 < R2 && d2 > 60) {
+          const d = Math.sqrt(d2);
+          const f = (cursor.mode === 'attract' ? -mouseStrength : mouseStrength) / (d + 8);
+          n.vx += (dx / d) * f * 0.02;
+          n.vy += (dy / d) * f * 0.02;
+        }
+      }
+
+      // pulse size
+      n.pulse += dt * 0.0018;
+      n.r = n.baseR + Math.sin(n.pulse) * 1.2;
+      // slight velocity damping
+      n.vx *= 0.999;
+      n.vy *= 0.999;
+    }
+  }
+
+  // ---------- Sparks (signal packets) ----------
+  function spawnSparkNear(x, y) {
+    // find nearest two nodes within RANGE and launch a spark along that line
+    let a = null, b = null, best = 1e9;
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      const dx = n.x - x, dy = n.y - y;
+      const d2 = dx*dx + dy*dy;
+      if (d2 < best) { best = d2; a = n; }
+    }
+    if (!a) return;
+    // choose a neighbor of a
+    let choice = null, cbest = 1e9;
+    const idxs = neighborsOf(a);
+    for (const j of idxs) {
+      const m = nodes[j];
+      if (m === a) continue;
+      const ddx = a.x - m.x, ddy = a.y - m.y;
+      const d2 = ddx*ddx + ddy*ddy;
+      if (d2 < RANGE2 && d2 < cbest) { cbest = d2; choice = m; }
+    }
+    if (!choice) return;
+    sparks.push({
+      a, b: choice, t: 0, speed: 0.012 + Math.random() * 0.02,
+      color: a.hue
+    });
+  }
+  function updateSparks(dt) {
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.t += s.speed * dt;
+      if (s.t >= 1) { sparks.splice(i, 1); continue; }
+    }
+    // auto-fire sometimes
+    if (Math.random() < 0.05) {
+      const a = nodes[(Math.random() * nodes.length) | 0];
+      const idxs = neighborsOf(a);
+      if (idxs.length) {
+        const b = nodes[idxs[(Math.random() * idxs.length) | 0]];
+        if (a && b) sparks.push({ a, b, t: 0, speed: 0.01 + Math.random() * 0.02, color: a.hue });
+      }
+    }
+  }
+
+  // ---------- Render ----------
+  function draw() {
+    // clear in screen space
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // world transform
+    applyTransform();
+
+    // cull rect in world space (for line draw optimizations)
+    const vw = (W / scale), vh = (H / scale);
+    const left = (-tx) / scale - 40, top = (-ty) / scale - 40;
+    const right = left + vw + 80, bottom = top + vh + 80;
+
+    // draw connections (with gradients)
+    ctx.lineWidth = 1;
+    // build spatial grid
+    updateGrid();
+
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      if (n.x < left - RANGE || n.x > right + RANGE || n.y < top - RANGE || n.y > bottom + RANGE) continue;
+
+      const idxs = neighborsOf(n);
+      for (const j of idxs) {
+        if (j <= i) continue; // draw once
+        const m = nodes[j];
+        const dx = n.x - m.x, dy = n.y - m.y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 <= RANGE2) {
+          const d = Math.sqrt(d2);
+          const a = 0.75 - d / (RANGE * 1.1);
+          if (a <= 0) continue;
+          // gradient line
+          const g = ctx.createLinearGradient(n.x, n.y, m.x, m.y);
+          g.addColorStop(0, n.hue);
+          g.addColorStop(1, m.hue);
+          ctx.globalAlpha = Math.min(0.9, Math.max(0.15, a));
+          ctx.strokeStyle = g;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = n.hue;
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(m.x, m.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+
+    // draw sparks
+    for (const s of sparks) {
+      const x = s.a.x + (s.b.x - s.a.x) * s.t;
+      const y = s.a.y + (s.b.y - s.a.y) * s.t;
+      ctx.beginPath();
+      ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = s.color;
+      ctx.shadowBlur = 22;
+      ctx.shadowColor = s.color;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // draw nodes
+    for (const n of nodes) {
+      if (n.x < left - 20 || n.x > right + 20 || n.y < top - 20 || n.y > bottom + 20) continue;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = n.hue;
+      ctx.shadowBlur = 24;
+      ctx.shadowColor = n.hue;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // small core
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, Math.max(1, n.r * 0.5), 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffffcc';
+      ctx.fill();
+    }
+  }
+
+  // ---------- Main loop ----------
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(33, now - last); // clamp for stability
+    last = now;
+    physics(dt);
+    updateSparks(dt);
+    draw();
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+})();
+</script>
 </body>
 </html>
