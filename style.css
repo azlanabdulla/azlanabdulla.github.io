@@ -5,27 +5,28 @@ html, body {
   padding: 0;
 }
 
-/* Single static background color, fixed to viewport.
-   overflow:hidden prevents page scroll / extra "pages" */
 body {
-  background: linear-gradient(180deg, #4b0082 0%, #000000 100%); /* single solid color you asked for */
-  min-height: 100vh;   /* minimum viewport height */
-  overflow-y: auto;    /* allow vertical scrolling */
-  overflow-x: hidden;  /* prevent horizontal scrolling */
+  background: linear-gradient(180deg, #4b0082 0%, #000000 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100vh;  /* << fix */
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* align to top to show padding */
-  padding: 20px 0;     /* reduced top and bottom padding */
+  align-items: flex-start;
+  padding: 10px 0;
+  padding-bottom: 10%;
 }
 
 /* Page wrapper — fixed width and height (static) */
 .page {
-    padding-top: 15%;
     width: 360px;
     height: 800px;    /* fixed height for the whole card/page */
     position: relative;
     display: block;
-    padding-bottom: 10%;
+    padding-top: 10%;
 }
 
 /* Profile wrapper matches page */
@@ -153,7 +154,7 @@ body {
 .swipe-area {
   overflow: hidden;
   width: 100%;
-  margin-top: 38%;
+  margin-top: 40%;
   touch-action: pan-y;
 }
 .swipe-track {
