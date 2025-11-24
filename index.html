@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
+<div class="page">
   <div class="profile-wrapper">
 
     <!-- Avatar on top of content -->
@@ -46,6 +46,7 @@
         <button class="tab-btn" data-index="1">Projects</button>
         <button class="tab-btn" data-index="2">Contact</button>
       </div>
+    </div>
 
       <!-- Swipe area -->
       <div class="swipe-area" id="swipeArea" aria-roledescription="carousel">
@@ -62,7 +63,9 @@
           <div class="panel">
             <div class="grid">
               <a href="https://github.com/azlanabdulla/TicTacToe">
-                <img src="asset/tictactoe.png"  alt="TicTacToe">
+                  <video class="bg-video" autoplay muted loop playsinline>
+                      <source src="asset/tictactoe.mp4" type="video/mp4">
+                  </video>
               </a>
               <a href="https://github.com/azlanabdulla/nova-gemini-chatbot">
                 <img src="asset/chatbot.png" alt="nova-gemini-chatbot">
@@ -129,8 +132,8 @@
         </div>
       </div>
 
-    </div>
   </div>
+</div>
 <script src="script.js"></script>
 </body>
 </html>
