@@ -1,53 +1,68 @@
-body {
+/* Reset & fixed viewport */
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100vh;
+}
 
-  background: linear-gradient(180deg, #4b0082 0%, #000000 100%);
+/* Single static background color, fixed to viewport.
+   overflow:hidden prevents page scroll / extra "pages" */
+body {
+  background: linear-gradient(180deg, #4b0082 0%, #000000 100%); /* single solid color you asked for */
+  min-height: 100vh;   /* minimum viewport height */
+  overflow-y: auto;    /* allow vertical scrolling */
+  overflow-x: hidden;  /* prevent horizontal scrolling */
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-start; /* align to top to show padding */
+  padding: 20px 0;     /* reduced top and bottom padding */
 }
 
-/* wrapper for all elements */
+/* Page wrapper — fixed width and height (static) */
+.page {
+    padding-top: 15%;
+    width: 360px;
+    height: 800px;    /* fixed height for the whole card/page */
+    position: relative;
+    display: block;
+    padding-bottom: 10%;
+}
+
+/* Profile wrapper matches page */
 .profile-wrapper {
-  width: 360px;     /* fixed width */
+  width: 100%;
+  height: 100%;
   position: relative;
-  margin-top: 40px; /* push entire UI down from top */
 }
 
-/* THE AVATAR BOX */
+/* Avatar positioned absolutely so it overlaps the card cleanly */
 .avatar-box {
   width: 220px;
   height: 220px;
   background: #ffcc33;
   border-radius: 25px;
-  margin-top: 25px;
-
   position: absolute;
   left: 50%;
-  top: 0;
-  transform: translateX(-50%); /* center horizontally */
-
+  top: 24px;               /* distance from top of the page */
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
-
   overflow: hidden;
-  z-index: 10; /* keeps avatar above the container box */
+  z-index: 10;
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
-
 .avatar-box img {
   width: 100%;
   height: auto;
-  padding-top: 20px;
+  display: block;
+  padding-top: 18px;
 }
 
 /* THE CONTENT BOX BELOW THE AVATAR */
 .container-box {
   width: 320px;    /* same width as wrapper */
-  height: 300px;   /* fixed size */
+  height: 270px;   /* fixed size */
   background:  linear-gradient(180deg, #2F3D59 0%, #0B1326 100%);
   border-radius: 30px;
 
@@ -110,7 +125,7 @@ body {
   display:flex;
   justify-content:center;
   gap:22px;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 .tab-btn {
   background: transparent;
@@ -138,7 +153,7 @@ body {
 .swipe-area {
   overflow: hidden;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 38%;
   touch-action: pan-y;
 }
 .swipe-track {
@@ -176,11 +191,19 @@ body {
   border-radius: 12px;
   background: #000;     /* optional: visible border around image */
 }
+.grid video {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: fill;  /* shows full image */
+  border-radius: 12px;
+  background: #000;     /* optional: visible border around image */
+}
 
 
 /* Contact Section Styling */
 .contact-wrap {
   padding: 12px 8px;
+  
 }
 
 .contact-grid {
@@ -188,6 +211,7 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   width: 100%;
+ padding-left: 8%;
 }
 
 .contact-card {
@@ -199,7 +223,8 @@ body {
   gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  min-height: 90px;
+  min-height: 80px;
+  padding-bottom: 1px;
 }
 
 /* Icon styling */
@@ -223,6 +248,7 @@ body {
 /* Text info */
 .contact-card .info {
   flex: 1;
+  padding-bottom: 5px;
 }
 
 .contact-card h3 {
@@ -260,10 +286,13 @@ body {
   cursor: pointer;
   opacity: 0.6;
   transition: opacity 0.2s;
+    padding-left: 50px;
+
 }
 
 .open-icon:hover {
   opacity: 1;
+
 }
 
 .open-icon img {
@@ -289,4 +318,4 @@ body {
 /* GitHub - Dark Gray */
 .github-card {
   background: linear-gradient(145deg, #24292e, #0d1117) !important;
-}
+}   
