@@ -146,58 +146,147 @@ body {
   width:300%; /* 3 panels */
   transition: transform 260ms cubic-bezier(.2,.9,.3,1);
   will-change: transform;
+  height: auto; /* ADD THIS */
 }
 .panel {
   width: 100%;
   flex: 0 0 100%;
   box-sizing: border-box;
   padding-bottom: 8px;
+  min-width: 0; /* ADD THIS - important for grid to work inside flex */
 }
 
 /* Grid (like your screenshot) */
 .grid {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  padding: 8px 6px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  gap: 15px;
+  width: 33%;
+  margin-top: 12px;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
 }
+
+
 .grid img {
-  width:100%;
-  display:block;
+  width: 100%;
   aspect-ratio: 1/1;
-  object-fit: cover;
+  object-fit: contain;  /* shows full image */
   border-radius: 12px;
+  background: #000;     /* optional: visible border around image */
 }
 
-/* Projects list */
-.projects-list {
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  padding:8px 6px;
-}
-.project-card {
-  display:flex;
-  gap:12px;
-  align-items:center;
-  background: rgba(255,255,255,0.03);
-  padding:10px;
-  border-radius:12px;
-}
-.thumb {
-  width:64px;
-  height:64px;
-  background-size:cover;
-  background-position:center;
-  border-radius:10px;
-  flex:0 0 64px;
-}
-.project-card .meta h4 { margin:0; font-size:15px; color:#fff; }
-.project-card .meta p { margin:4px 0 0; color:rgba(255,255,255,0.7); font-size:12px; }
 
-/* Contact panel styling */
-.contact-panel { padding: 8px 6px; color: #fff; }
-.contact-panel a { color:#ffd166; text-decoration:none; }
+/* Contact Section Styling */
+.contact-wrap {
+  padding: 12px 8px;
+}
 
-/* small nicety: prevent selection while swiping */
-.swipe-area, .tab-btn { user-select: none; -webkit-user-select: none; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.contact-card {
+  position: relative;
+  border-radius: 18px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-height: 90px;
+}
+
+/* Icon styling */
+.contact-card .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 4px;
+}
+
+.contact-card .icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* Text info */
+.contact-card .info {
+  flex: 1;
+}
+
+.contact-card h3 {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.contact-card p {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.3;
+}
+
+.contact-card a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contact-card a:hover {
+  color: #000000;
+}
+
+/* Open/Share button */
+.open-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.open-icon:hover {
+  opacity: 1;
+}
+
+.open-icon img {
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+}
+
+/* Wide GitHub card (spans 2 columns) */
+.contact-card.wide {
+  grid-column: span 2;
+}
+/* Email - Blue */
+.email-card {
+  background: linear-gradient(145deg, #1e3a5f, #0f1c2e) !important;
+}
+
+/* Instagram - Purple/Pink */
+.instagram-card {
+  background: linear-gradient(145deg, #833ab4, #4a1a5c) !important;
+}
+
+/* GitHub - Dark Gray */
+.github-card {
+  background: linear-gradient(145deg, #24292e, #0d1117) !important;
+}
