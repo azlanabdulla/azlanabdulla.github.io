@@ -2,58 +2,202 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: #000;
+
+  background: linear-gradient(180deg, #4b0082 0%, #000000 100%);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* wrapper for all elements */
+.profile-wrapper {
+  width: 360px;     /* fixed width */
+  position: relative;
+  margin-top: 40px; /* push entire UI down from top */
+}
+
+/* THE AVATAR BOX */
+.avatar-box {
+  width: 220px;
+  height: 220px;
+  background: #ffcc33;
+  border-radius: 25px;
+  margin-top: 25px;
+
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%); /* center horizontally */
+
+  display: flex;
   justify-content: center;
   align-items: center;
-  color: #0ff;
-  font-family: 'Courier New', monospace;
-  text-align: center;
-  overflow-y: auto;
+
+  overflow: hidden;
+  z-index: 10; /* keeps avatar above the container box */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-#voiceImage {
-  width: 300px;
-  max-width: 80%;
+.avatar-box img {
+  width: 100%;
   height: auto;
-  margin-bottom: 20px;
-  border-radius: 10px;
+  padding-top: 20px;
 }
 
-#transcript {
-  white-space: pre-wrap;
-  font-size: 1.1rem;
-  padding: 1rem 1.5rem;
-  width: 90%;
-  max-width: 600px;
-  margin-top: 10px;
-  line-height: 1.5;
-  text-align: center; /* ✅ Center align text */
-  border-radius: 0;
-  background: none;
+/* THE CONTENT BOX BELOW THE AVATAR */
+.container-box {
+  width: 320px;    /* same width as wrapper */
+  height: 300px;   /* fixed size */
+  background:  linear-gradient(180deg, #2F3D59 0%, #0B1326 100%);
+  border-radius: 30px;
+
+  position: relative;
+  top: 140px;       /* moves the content box DOWN so avatar overlaps it */
+
+  padding: 20px;
+}
+/* transparent curved cut-out */
+.container-box::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 2000px;
+  width: 220px;
+  height: 100px;
+
+  background: transparent;  /* ← FULLY TRANSPARENT */
+  
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+
+  z-index: 5;
+  pointer-events: none;
+}
+.Name, .Username {
+  text-align: center;   /* centers the text horizontally */
+  margin: 0;
+  padding: 0;
 }
 
-#audioPlayer {
-  margin-top: 10px;
-  width: 90%;
-  max-width: 400px;
+/* add spacing if needed */
+.Name {
+  color: #ffffff;
+  margin-top: 30%;    /* push name down inside box */
+  font-size: 30px;
+  font-weight: 700;
 }
 
-@media (max-width: 480px) {
-  h1 {
-    font-size: 2rem;
-  }
-  #voiceImage {
-    width: 90%;
-  }
-  #transcript {
-    font-size: 1rem;
-    padding: 1rem;
-  }
+.Username {
+  color: #ffffffa1;
+  margin-top: 5px;
+  font-size: 20px;
 }
+.logo-bar {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.logo-link img {
+  width: 40px;
+  height: 40px;
+}
+
+/* Tabs header */
+.tabs-header {
+  display:flex;
+  justify-content:center;
+  gap:22px;
+  margin-top: 40px;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  padding: 8px 6px;
+  cursor:pointer;
+  position: relative;
+}
+.tab-btn.active { color: #fff; }
+.tab-btn.active::after {
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-6px;
+  width:36px;
+  height:4px;
+  border-radius:4px;
+  background:#ffd166; /* accent underline color */
+}
+
+/* Swipe area */
+.swipe-area {
+  overflow: hidden;
+  width: 100%;
+  margin-top: 20px;
+  touch-action: pan-y;
+}
+.swipe-track {
+  display:flex;
+  width:300%; /* 3 panels */
+  transition: transform 260ms cubic-bezier(.2,.9,.3,1);
+  will-change: transform;
+}
+.panel {
+  width: 100%;
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  padding-bottom: 8px;
+}
+
+/* Grid (like your screenshot) */
+.grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 8px 6px 20px;
+}
+.grid img {
+  width:100%;
+  display:block;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Projects list */
+.projects-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:8px 6px;
+}
+.project-card {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background: rgba(255,255,255,0.03);
+  padding:10px;
+  border-radius:12px;
+}
+.thumb {
+  width:64px;
+  height:64px;
+  background-size:cover;
+  background-position:center;
+  border-radius:10px;
+  flex:0 0 64px;
+}
+.project-card .meta h4 { margin:0; font-size:15px; color:#fff; }
+.project-card .meta p { margin:4px 0 0; color:rgba(255,255,255,0.7); font-size:12px; }
+
+/* Contact panel styling */
+.contact-panel { padding: 8px 6px; color: #fff; }
+.contact-panel a { color:#ffd166; text-decoration:none; }
+
+/* small nicety: prevent selection while swiping */
+.swipe-area, .tab-btn { user-select: none; -webkit-user-select: none; }
