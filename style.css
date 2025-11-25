@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-  background: linear-gradient(180deg, #4b0082 0%, #000000 100%);
+  background: linear-gradient(145deg, #4b0082 0%, #000000 80%);
   background-attachment: fixed;
   display: flex;
   justify-content: center;
@@ -23,23 +23,24 @@ body {
 .avatar-box {
   width: 220px;
   height: 220px;
-  background: #ffcc33;
-  border-radius: 25px;
+  background: #FDC30B;
+  border-radius: 35px;
   margin-top: 25px;
-
   position: absolute;
   left: 50%;
   top: 0;
-  transform: translateX(-50%); 
-
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
-
   overflow: hidden;
-  z-index: 10; /* keeps avatar above the container box */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  z-index: 10;
+
+  /* FIXED BOX SHADOW */
+  box-shadow: inset -20px -20px 60px #d7a609,
+              inset 20px 20px 60px #ffe00d;
 }
+
 
 .avatar-box img {
   width: 100%;
@@ -50,7 +51,7 @@ body {
 .container-box {
   width: 320px;   
   height: 270px; 
-  background:  linear-gradient(180deg, #2F3D59 0%, #0B1326 100%);
+background: linear-gradient(180deg, #2e3c58 0%,#0e172a 100%);
   border-radius: 30px;
   position: relative;
   top: 140px;     
@@ -172,6 +173,8 @@ body {
 /* Contact Section Styling */
 .contact-wrap {
   padding: 12px 8px;
+  justify-content: center;
+  align-items: center;
   
 }
 
@@ -235,13 +238,13 @@ body {
 }
 
 .contact-card a {
-  color: rgba(255, 255, 255, 0.7);
+  color: #ffffffb3;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .contact-card a:hover {
-  color: #000000;
+  color: #ffffff;
 }
 
 /* Open/Share button */
@@ -276,15 +279,15 @@ body {
 }
 /* Email - Blue */
 .email-card {
-  background: linear-gradient(145deg, #1e3a5f, #0f1c2e) !important;
+  background: linear-gradient(145deg,#4285F4, #000080) !important;
 }
 
 /* Instagram - Purple/Pink */
 .instagram-card {
-  background: linear-gradient(145deg, #833ab4, #4a1a5c) !important;
+  background: linear-gradient(145deg,  #c13584, #833ab4) !important;
 }
 
 /* GitHub - Dark Gray */
 .github-card {
-  background: linear-gradient(145deg, #24292e, #0d1117) !important;
+  background: linear-gradient(145deg, #2b3137, #000000) !important;
 }   
