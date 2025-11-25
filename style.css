@@ -18,30 +18,33 @@ body {
     min-height: 800px; 
     position: relative;
     display: block;
-    padding-top: 10%;
 }
+/* THE AVATAR BOX */
 .avatar-box {
   width: 220px;
   height: 220px;
   background: #ffcc33;
   border-radius: 25px;
+  margin-top: 25px;
+
   position: absolute;
   left: 50%;
-  top: 24px;               /* distance from top of the page */
-  transform: translateX(-50%);
+  top: 0;
+  transform: translateX(-50%); 
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   overflow: hidden;
-  z-index: 10;
+  z-index: 10; /* keeps avatar above the container box */
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  margin-top: 40%;
 }
+
 .avatar-box img {
   width: 100%;
   height: auto;
-  display: block;
-  padding-top: 18px;
+  padding-top: 20px;
 }
 /* THE CONTENT BOX BELOW THE AVATAR */
 .container-box {
@@ -201,7 +204,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.08);
   margin-bottom: 4px;
 }
 
@@ -209,6 +211,7 @@ body {
   width: 24px;
   height: 24px;
   object-fit: contain;
+  filter: invert(1);
 }
 
 /* Text info */
@@ -250,7 +253,7 @@ body {
   border: none;
   padding: 0;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.8;
   transition: opacity 0.2s;
     padding-left: 50px;
 
