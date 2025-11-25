@@ -8,35 +8,18 @@ html, body {
 body {
   background: linear-gradient(180deg, #4b0082 0%, #000000 100%);
   background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: 100% 100vh;  /* << fix */
-  min-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 10px 0;
-  padding-bottom: 10%;
 }
-
-/* Page wrapper — fixed width and height (static) */
 .page {
     width: 360px;
-    height: 800px;    /* fixed height for the whole card/page */
+    min-height: 800px; 
     position: relative;
     display: block;
     padding-top: 10%;
 }
-
-/* Profile wrapper matches page */
-.profile-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-/* Avatar positioned absolutely so it overlaps the card cleanly */
 .avatar-box {
   width: 220px;
   height: 220px;
@@ -52,6 +35,7 @@ body {
   overflow: hidden;
   z-index: 10;
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  margin-top: 40%;
 }
 .avatar-box img {
   width: 100%;
@@ -59,37 +43,17 @@ body {
   display: block;
   padding-top: 18px;
 }
-
 /* THE CONTENT BOX BELOW THE AVATAR */
 .container-box {
-  width: 320px;    /* same width as wrapper */
-  height: 270px;   /* fixed size */
+  width: 320px;   
+  height: 270px; 
   background:  linear-gradient(180deg, #2F3D59 0%, #0B1326 100%);
   border-radius: 30px;
-
   position: relative;
-  top: 140px;       /* moves the content box DOWN so avatar overlaps it */
-
+  top: 140px;     
   padding: 20px;
 }
-/* transparent curved cut-out */
-.container-box::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 2000px;
-  width: 220px;
-  height: 100px;
 
-  background: transparent;  /* ← FULLY TRANSPARENT */
-  
-  border-bottom-left-radius: 40px;
-  border-bottom-right-radius: 40px;
-
-  z-index: 5;
-  pointer-events: none;
-}
 .Name, .Username {
   text-align: center;   /* centers the text horizontally */
   margin: 0;
@@ -119,6 +83,7 @@ body {
 .logo-link img {
   width: 40px;
   height: 40px;
+  filter: invert(1);
 }
 
 /* Tabs header */
